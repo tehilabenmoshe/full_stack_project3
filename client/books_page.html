@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Tracker</title>
+</head>
+<body>
+    <h1>Book Tracker</h1>
+    <script type="module">
+        import { getBooks, addBook, updateBook, deleteBook } from "/server/booksAPI.js";
+        import { getUsers, addUser, authenticateUser } from "/server/usersAPI.js";
+
+        console.log("📚 Testing Books API:");
+        console.log("All Books:", getBooks());
+
+        console.log("➕ Adding a new book...");
+        addBook("New Book", "John Doe", "To Read", "A sample book", 2024);
+        console.log("All Books after adding:", getBooks());
+
+        console.log("📝 Updating book...");
+        updateBook(1, { status: "Reading" });
+        console.log("All Books after update:", getBooks());
+
+        console.log("❌ Deleting book...");
+        deleteBook(1);
+        console.log("All Books after delete:", getBooks());
+
+        console.log("👤 Testing Users API:");
+        console.log("All Users:", getUsers());
+
+        console.log("➕ Adding a new user...");
+        addUser("newuser", "mypassword");
+        console.log("All Users after adding:", getUsers());
+
+        console.log("🔑 Authenticating user...");
+        console.log(authenticateUser("newuser", "mypassword")); // אמור להחזיר את המשתמש
+        console.log(authenticateUser("wronguser", "wrongpassword")); // אמור להחזיר null או שגיאה
+    </script>
+
+</body>

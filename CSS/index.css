@@ -2,13 +2,16 @@
 
 body {
     margin: 0;
-    background-color: #fdfdfd;
+    background-color: #f4f4f4;
     color: #333;
     background-size: cover; /* Ensures the image covers the entire screen */
     background-position: center; /* Centers the image */
     background-repeat: no-repeat; /* Prevents the image from repeating */
     font-family: 'Ploni', sans-serif;
     font-weight: 300;
+    justify-content: center;
+    align-items: center;
+    
 }
 
 /* Navbar container */
@@ -16,7 +19,7 @@ body {
     display: flex;
     justify-content: space-between; /* Left and right sections */
     align-items: center; /* Vertical alignment */
-    background-color: #333;
+    background-color: #009aa2;
     padding: 10px 20px;
 }
   
@@ -43,4 +46,60 @@ body {
 /* Right side: Logo container */
 .logo img {
     height: 40px; /* Adjust as needed */
+}
+
+h1{
+    display: flex;
+}
+
+/* Login Section Styling */
+.login-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+  
+  /* Login Form Styling */
+.login-form {
+    background-color: #fff;
+    padding: 2em;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+  
+.login-form h2 {
+    margin-top: 0;
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+  
+.login-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #009aa2;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+  
+.login-form button:hover {
+    background-color: #009aa2;
 }

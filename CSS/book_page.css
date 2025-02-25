@@ -1,0 +1,33 @@
+/* Navbar container */
+.navbar {
+    display: flex;
+    justify-content: space-between; /* Left and right sections */
+    align-items: center; /* Vertical alignment */
+    background-color: #009aa2;
+    padding: 10px 20px;
+}
+  
+/* Left side: Buttons container */
+.left-buttons {
+    display: flex;
+    gap: 10px;
+}
+  
+/* Styling for the buttons */
+.left-buttons button {
+    padding: 8px 16px;
+    background-color: #555;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+  
+.left-buttons button:hover {
+    background-color: #777;
+}
+  
+/* Right side: Logo container */
+.logo img {
+    height: 40px; /* Adjust as needed */
+}

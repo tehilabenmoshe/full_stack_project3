@@ -1,40 +1,50 @@
+import { books, saveBooks } from "../database/booksData.js";
 
-import books from "../../DB/booksData.js";
 // פונקציה לשליפת כל הספרים
 export function getBooks() {
-    return books;
+    return books.length ? books : { error: "No books found" };
 }
 
 // פונקציה להוספת ספר חדש
 export function addBook(title, author, status, description, year) {
+    if (!title || !author || !status || !year) {
+        return { error: "Missing required fields" }; // בדיקה שהכל נשלח
+    }
+
     const newBook = {
-        id: books.length ? books[books.length - 1].id + 1 : 1, //קביעת ID חדש לפי המיקום ברשימה
+        id: books.length ? books[books.length - 1].id + 1 : 1,
         title,
         author,
         status,
         description,
         year
     };
+
     books.push(newBook);
+    saveBooks(books); // שמירה ב-LocalStorage
     return newBook;
 }
 
 // פונקציה לעדכון ספר קיים
 export function updateBook(id, updatedData) {
     const bookIndex = books.findIndex(book => book.id === id);
-    if (bookIndex !== -1) //הספר נמצא
-        {
-        books[bookIndex] = { ...books[bookIndex], ...updatedData };
-        return books[bookIndex];
+    if (bookIndex === -1) {
+        return { error: "Book not found" }; // ספר לא נמצא
     }
-    return null;
+
+    books[bookIndex] = { ...books[bookIndex], ...updatedData };
+    saveBooks(books); // שמירה לאחר עדכון
+    return books[bookIndex];
 }
 
 // פונקציה למחיקת ספר
 export function deleteBook(id) {
     const index = books.findIndex(book => book.id === id);
-    if (index !== -1) {
-        return books.splice(index, 1);
+    if (index === -1) {
+        return { error: "Book not found" }; // ספר לא נמצא
     }
-    return null;
+
+    const deletedBook = books.splice(index, 1);
+    saveBooks(books); // שמירה לאחר מחיקה
+    return deletedBook[0]; // מחזירים את הספר שנמחק
 }

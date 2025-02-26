@@ -1,0 +1,89 @@
+/* Login Section Styling */
+.login-section {
+    position: absolute;
+    top: 10px; /* Push it down so it doesn't cover the navbar */
+    left: 0;
+    width: 100vw;  
+    height: 94%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background-image: url('../MEDIA/back3.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 20px;
+}
+
+
+  
+/* Login Form Styling */
+.login-form {
+    margin-top: 140px;
+    background-color: #fff;
+    padding: 3em;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 350px;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    right: 15%;  /* Push the form slightly to the left from the right edge */
+}
+
+  
+.login-form h2 {
+    color: #3B77BE;
+    margin-top: 0;
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+    text-align: right;
+    color: #3B77BE;
+    
+}
+
+.login-form input {
+    width: 90%;
+    padding: 8px;
+    border: 1px solid #f0f0f0e2;
+    background-color: #f0f0f0e2;;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    margin-left: 20px;
+    font-family: 'Ploni', sans-serif;
+    text-align: right;
+}
+  
+.login-form button {
+    width: 40%;
+    padding: 7px;
+    background-color: #3B77BE;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: block;  /* Make it a block element */
+    margin: 0 auto;  /* Center horizontally */
+    font-family: 'Ploni', sans-serif;
+    font-size: 14px;
+    margin-top: 18px;
+   
+}
+  
+.login-form button:hover {
+    background-color: #9ED16F;
+}
+
+.login-form h4 {
+    text-align: center;
+    color:  #3B77BE;
+    font-family: 'Ploni', sans-serif;
+    font-weight: 300px;
+
+}

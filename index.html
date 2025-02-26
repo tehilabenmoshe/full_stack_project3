@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Tracker SPA</title>
+    <link rel="stylesheet" href="./client/CSS/index.css">
+    <link rel="stylesheet" href="./client/CSS/main.css">
+    <link rel="stylesheet" href="./client/CSS/loginTemplate.css">
+    <link rel="stylesheet" href="./client/CSS/registrationTemplate.css">
+    
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="left-buttons"></div>
+        <div class="logo">
+            <img src="./client/MEDIA/booklogo2.png" alt="Logo">
+        </div>
+    </nav>
+
+  
+
+    <!-- SPA Container: כל התוכן יוחלף כאן -->
+    <div id="app">טוען...</div>
+
+    <!--  תבניות (Templates) לדפים שונים -->
+    <template id="login">
+      <h1>All books in one place!</h1>
+      
+        <section class="login-section">
+            <form class="login-form">
+                <h2>התחברות</h2>
+                <label for="username">שם משתמש</label>
+                <input type="text" id="username" name="username" placeholder="שם משתמש" required>
+
+                <label for="password">סיסמא</label>
+                <input type="password" id="password" name="password" placeholder="סיסמא" required>
+
+                <button type="submit">התחבר</button>
+                <h4>אין לך חשבון? <a href="#" data-route="register">הירשם כאן</a></h4>
+            </form>
+        </section>
+    </template>
+
+    <template id="register">
+        <section class="register-section">
+            <form class="register-form">
+                <h2>הרשמה</h2>
+                <label for="username">שם משתמש</label>
+                <input type="text" id="register-username" name="username" placeholder="שם משתמש" required>
+
+                <label for="password">סיסמא</label>
+                <input type="password" id="register-password" name="password" placeholder="סיסמא" required>
+
+                <button type="submit">הרשם</button>
+                <h4>כבר יש לך חשבון? <a href="#" data-route="login">התחבר כאן</a></h4>
+            </form>
+        </section>
+    </template>
+
+    <script type="module" src="./client/js/router.js"></script>
+    <script type="module" src="client/js/main.js"></script> ✅ Correct
+
+</body>
+</html>

@@ -1,5 +1,5 @@
-import { getBooks, addBook, updateBook, deleteBook } from "./api/booksAPI.js";
-import { getUsers, addUser, authenticateUser } from "./api/usersAPI.js";
+import { getBooks, addBook, updateBook, deleteBook } from "./booksAPI.js";
+import { getUsers, addUser, authenticateUser } from "./usersAPI.js";
 
 // פונקציה שמטפלת בבקשות מהלקוח
 export function handleRequest(request) {
@@ -26,12 +26,12 @@ export function handleRequest(request) {
             if (method === "POST") return addUser(data.username, data.password);
             return { error: "Invalid request method for /users" };
 
-        case "/users/login":
+        case "/users":
             if (method === "POST") {
-                const user = authenticateUser(data.username, data.password);
-                return user ? user : { error: "Invalid credentials" };
+                console.log("📩 Registering new user:", data);                  
+                return addUser(data.username, data.password); // Correctly calling addUser
             }
-            return { error: "Invalid request method for /users/login" };
+            return { error: "Invalid request method for /users" };
 
         default:
             return { error: "Unknown endpoint" };

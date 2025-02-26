@@ -1,4 +1,4 @@
-import { users, saveUsers } from "../database/usersData.js";
+import { users, saveUsers } from "../DB/usersData.js";
 
 // פונקציה לשליפת כל המשתמשים
 export function getUsers() {

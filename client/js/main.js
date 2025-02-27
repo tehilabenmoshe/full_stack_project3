@@ -3,8 +3,9 @@ import { registerUser, loginUser } from "./users.js"; // ✅ Ensure the correct 
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    let loginForm = document.getElementById("login-form");
-    let registerForm = document.getElementById("register-form");
+    let loginForm = document.querySelector(".login-form");
+    let registerForm = document.querySelector(".register-form");
+
 
     //  פונקציונליות לטופס התחברות
     if (loginForm) {

@@ -1,7 +1,7 @@
 import { handleRequest } from "./server.js"; // מבצע ניתוב של הבקשות
 
 class Network {
-    constructor(lossProbability = 0.1, minDelay = 1000, maxDelay = 3000) {
+    constructor(lossProbability = 0.0, minDelay = 1000, maxDelay = 3000) {
         this.lossProbability = lossProbability; // אחוז איבוד חבילות (10% ברירת מחדל)
         this.minDelay = minDelay; // זמן השהיה מינימלי (1 שנייה)
         this.maxDelay = maxDelay; // זמן השהיה מקסימלי (3 שניות)

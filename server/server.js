@@ -20,18 +20,16 @@ export function handleRequest(request) {
         case "/books/delete":
             if (method === "DELETE") return deleteBook(data.id);
             return { error: "Invalid request method for /books/delete" };
-
         case "/users":
             if (method === "GET") return getUsers();
-            if (method === "POST") return addUser(data.username, data.password);
-            return { error: "Invalid request method for /users" };
-
-        case "/users":
-            if (method === "POST") {
+            if (method === "POST") {                    
                 console.log("📩 Registering new user:", data);                  
-                return addUser(data.username, data.password); // Correctly calling addUser
+                return addUser(data.username, data.password);
             }
             return { error: "Invalid request method for /users" };
+            
+
+        
 
         default:
             return { error: "Unknown endpoint" };

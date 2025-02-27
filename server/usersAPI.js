@@ -1,4 +1,4 @@
-import { users, saveUsers } from "../DB/usersData.js";
+import { users, saveUsers, addUserToStorage} from "../DB/usersData.js";
 
 // פונקציה לשליפת כל המשתמשים
 export function getUsers() {
@@ -20,9 +20,11 @@ export function addUser(username, password) {
         username,
         password
     };
-
+    console.log("🔍 Checking new user:", newUser);
     users.push(newUser);
-    saveUsers(users); // שמירה לאחר הוספת משתמש חדש
+    addUserToStorage(newUser); // שמירה לאחר הוספת משתמש חדש
+    
+
     return newUser;
 }
 

@@ -6,6 +6,8 @@ export function registerUser(username, password) {
         xhr.open("POST", "/users");
 
         console.log("🚀 Sending request to register user:", { username, password });
+        // ✅ הוספת כותרת JSON
+         xhr.setRequestHeader("Content-Type", "application/json");
 
         // ✅ Use `onload` to handle the response when the request finishes
         xhr.onload = function () {

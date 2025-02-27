@@ -18,6 +18,7 @@ class Network {
             return;
         }
 
+
         // הגדרת זמן עיכוב אקראי
         const delay = Math.random() * (this.maxDelay - this.minDelay) + this.minDelay;
         console.log(`⏳ Simulating network delay of ${Math.round(delay)}ms`);
@@ -28,8 +29,33 @@ class Network {
             console.log(`✅ Response received from ${request.endpoint}`, response);
             callback(response);
         }, delay);
+
+
+
+
+
+        
+
+        // ✅ תיקון הבעיה: בדיקה אם הנתונים הם string והמרה ל-JSON
+        if (request.data && typeof request.data === "string") {
+            console.warn("⚠️ Data is a string instead of an object. Parsing...");
+            try {
+                request.data = JSON.parse(request.data);
+                console.log("✅ Data successfully parsed:", request.data);
+            } catch (error) {
+                console.error("🚨 Error parsing data:", error);
+                callback({ error: "Invalid JSON format in request data." });
+                return;
+            }
+        }
+
+
+
     }
 }
 
 // יצירת אובייקט Network עם 20% איבוד חבילות
-export const network = new Network(0.2);
+//export const network = new Network(0.2);
+
+// ביטלתי את האיבוד חבילות לצורך בדיקת הקוד
+export const network = new Network(0.0);

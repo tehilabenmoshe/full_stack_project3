@@ -9,12 +9,18 @@ class FXMLHttpRequest {
         this.status = 0;      // קוד סטטוס HTTP (200, 404 וכו')
         this.onload = null;   // פונקציה שתופעל במקרה של הצלחה
         this.onerror = null;  // פונקציה שתופעל במקרה של שגיאה
+        this.headers = {}; // לכותרות
     }
 
     // פתיחת חיבור (שמירת שיטת הבקשה והכתובת)
     open(method, url) {
         this.method = method;
         this.url = url;
+    }
+
+      // ✅ פונקציה להוספת כותרות לבקשה
+      setRequestHeader(header, value) {
+        this.headers[header] = value;
     }
 
     // שליחת הבקשה דרך Network FAJAX
@@ -25,7 +31,8 @@ class FXMLHttpRequest {
         const request = {
             method: this.method,
             endpoint: this.url,
-            data: this.data
+            data: this.data,
+            headers: this.headers // ✅ נוסיף גם את הכותרות שנקבעו
         };
 
         console.log(`📡 FAJAX sending request:`, request);
@@ -37,16 +44,15 @@ class FXMLHttpRequest {
                 if (this.onerror) this.onerror(response.error);
             } else {
                 this.status = 200; // הצלחה
-                this.response = JSON.stringify(response);
+                this.response = response;
                 if (this.onload) this.onload();
             }
         });
     }
-
-    // מחזירה את התגובה בפורמט JSON
     get responseText() {
-        return this.response;
+        return typeof this.response === "string" ? this.response : JSON.stringify(this.response); //המרה לגייסון אם זה לא
     }
+    
 }
 
 export { FXMLHttpRequest };

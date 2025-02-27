@@ -11,7 +11,17 @@ function saveUsers(users) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
 }
 
+
+
+// פונקציה להוספת משתמש ל-LocalStorage
+function addUserToStorage(user) {  
+    const users = loadUsers();
+    users.push(user);
+    saveUsers(users);
+}
+
+
 // טעינת משתמשים
 const users = loadUsers();
 
-export { users, saveUsers };
+export { users, saveUsers,addUserToStorage  };

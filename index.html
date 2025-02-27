@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="./client/CSS/main.css">
     <link rel="stylesheet" href="./client/CSS/loginTemplate.css">
     <link rel="stylesheet" href="./client/CSS/registrationTemplate.css">
+    <script type="module" src="./client/js/main.js"></script>  
+    <script type="module" src="./client/js/router.js"></script>
+  
     
 </head>
 <body>
@@ -60,8 +63,18 @@
         </section>
     </template>
 
-    <script type="module" src="./client/js/router.js"></script>
-    <script type="module" src="./client/js/main.js"></script>  
+    <template id="books_template">
+      <section class="book-section">
+          <h2>📚 הספרים שלך</h2>
+          <p>כאן יוצגו הספרים שלך.</p>
+          <button onclick="navigateTo('login')">🔄 חזרה להתחברות</button>
+      </section>
+  </template>
+  
 
+
+
+
+    
 </body>
 </html>

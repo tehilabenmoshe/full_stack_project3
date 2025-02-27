@@ -1,16 +1,17 @@
-// router.js - SPA Navigation using Templates
+import { attachEventListeners } from "./main.js";
 
 function loadPage(page) {
     let template = document.getElementById(page); // Find the template by ID
     if (template) {
         document.getElementById("app").innerHTML = template.innerHTML; // Load the template into #app
+        attachEventListeners(); // Reattach form event listeners after page load
     } else {
-        document.getElementById("app").innerHTML = "<h2>דף לא נמצא</h2>"; // Page not found
+        document.getElementById("app").innerHTML = "<h2>❌ דף לא נמצא</h2><p>נסה שוב מאוחר יותר.</p>"; // Page not found
     }
 }
 
 // Function to handle navigation without reloading the page
-function navigateTo(page) {
+export function navigateTo(page) {
     history.pushState({}, "", `#${page}`); // Update the URL
     loadPage(page); // Load the requested page
 }

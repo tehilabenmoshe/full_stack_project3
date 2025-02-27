@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./client/CSS/main.css">
     <link rel="stylesheet" href="./client/CSS/loginTemplate.css">
     <link rel="stylesheet" href="./client/CSS/registrationTemplate.css">
+    <link rel="stylesheet" href="./client/CSS/bookTemplate.css">
     <script type="module" src="./client/js/main.js"></script>  
     <script type="module" src="./client/js/router.js"></script>
   
@@ -64,12 +65,25 @@
     </template>
 
     <template id="books_template">
-      <section class="book-section">
-          <h2>📚 הספרים שלך</h2>
-          <p>כאן יוצגו הספרים שלך.</p>
-          <button onclick="navigateTo('login')">🔄 חזרה להתחברות</button>
-      </section>
-  </template>
+        <section class="book-section">
+            <h2 style="text-align: center;">📚 הספרים שלך</h2> <!-- כותרת מרכזית -->
+    
+            <!-- 🔍 אזור חיפוש -->
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="🔍 חפש ספר..." onkeyup="filterBooks()">
+                <button onclick="filterBooks()">חיפוש</button>
+            </div>
+    
+            <!-- 📖 רשימת ספרים -->
+            <div class="books-grid" id="booksList">
+                <!-- כאן יתווספו הספרים דינאמית -->
+            </div>
+    
+            <!-- כפתור חזרה -->
+            <button onclick="navigateTo('login')">🔄 חזרה להתחברות</button>
+        </section>
+    </template>
+    
   
 
 

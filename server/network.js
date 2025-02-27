@@ -27,13 +27,12 @@ class Network {
         setTimeout(() => {
             const response = handleRequest(request); // שולח את הבקשה לשרת
             console.log(`✅ Response received from ${request.endpoint}`, response);
+            console.log("🔎 Debug: Response before callback:", response);
             callback(response);
+
+            
+            
         }, delay);
-
-
-
-
-
         
 
         // ✅ תיקון הבעיה: בדיקה אם הנתונים הם string והמרה ל-JSON

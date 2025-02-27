@@ -7,7 +7,7 @@ export function registerUser(username, password) {
 
         console.log("🚀 Sending request to register user:", { username, password });
         // ✅ הוספת כותרת JSON
-         xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Content-Type", "application/json");
 
         // ✅ Use `onload` to handle the response when the request finishes
         xhr.onload = function () {
@@ -30,12 +30,19 @@ export function loginUser(username, password) {
     return new Promise((resolve, reject) => {
         let xhr = new FXMLHttpRequest();
         xhr.open("POST", "/users/login");
-        xhr.onreadystatechange = function () {
-            if (xhr.responseText) {
-                let response = JSON.parse(xhr.responseText);
-                response.error ? reject(response.error) : resolve(response);
-            }
+
+        // ✅ Use `onload` to handle the response when the request finishes
+        xhr.onload = function () {
+            console.log("📩 Login Response:", xhr.responseText);
+            let response = JSON.parse(xhr.responseText);
+            response.error ? reject(response.error) : resolve(response);
         };
+
+        xhr.onerror = function () {
+            console.error("❌ Network error while logging in.");
+            reject("Network error");
+        };
+
         xhr.send(JSON.stringify({ username, password }));
     });
 }
@@ -51,6 +58,6 @@ export function getLoggedInUser() {
                 response.error ? reject(response.error) : resolve(response);
             }
         };
-        xhr.send();
+        xhr.send(JSON.stringify({ username, password }));
     });
 }

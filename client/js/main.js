@@ -1,5 +1,5 @@
 //אחראי לנהל את האירועים שקוראים בכל הדפים ולקרוא לפןנקציות המתאימות
-import { registerUser, loginUser } from "./js/users.js"; // ✅ Ensure the correct case
+import { registerUser, loginUser } from "./users.js"; // ✅ Ensure the correct case
 
 
 document.addEventListener("DOMContentLoaded", function () {

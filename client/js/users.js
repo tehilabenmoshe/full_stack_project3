@@ -1,5 +1,4 @@
-import FXMLHttpRequest from "./fajax.js";
-
+import { FXMLHttpRequest } from "./fajax.js"; 
 // פונקציה לרישום משתמש חדש
 export function registerUser(username, password) {
     return new Promise((resolve, reject) => {

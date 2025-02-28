@@ -111,7 +111,7 @@ function loadAllBooks() {
 }
 
 // 🔹 Add Book Button Click
-function addBook() {
+window.addBook = function () {
     console.log("📖 Navigating to add books page...");
     navigateTo("add_books_template");
     setTimeout(loadAllBooks, 500); // Load books after navigating

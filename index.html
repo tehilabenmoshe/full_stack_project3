@@ -42,6 +42,8 @@
                 <label for="password">סיסמא</label>
                 <input type="password" id="password" name="password" placeholder="סיסמא" required>
 
+                <p id="login-error-message" style="color: red; display: none;"></p> <!-- Error Message Here -->
+
                 <button type="submit">התחבר</button>
                 <h4>אין לך חשבון? <a href="#" data-route="register">הירשם כאן</a></h4>
             </form>
@@ -64,6 +66,7 @@
         </section>
     </template>
 
+    <!-- אזור אישי -->
     <template id="books_template">
         <section class="book-section">
             <h2 style="text-align: center;">📚 הספרים שלך</h2> <!-- כותרת מרכזית -->
@@ -78,12 +81,37 @@
             <div class="books-grid" id="booksList">
                 <!-- כאן יתווספו הספרים דינאמית -->
             </div>
-    
-            <!-- כפתור חזרה -->
+
             <button onclick="navigateTo('login')">🔄 חזרה להתחברות</button>
+    
+            <!-- הוספת ספר-->
+            <button onclick="addBook()">➕ הוסף ספר</button>
         </section>
     </template>
     
+
+     <!--  כל הספרים הקיימים במאגר -->
+    <template id="add_books_template">
+        <section class="add-books-section">
+            <h2 style="text-align: center;">📚 הוספת ספרים</h2> <!-- כותרת מרכזית -->
+    
+            <!-- 🔍 אזור חיפוש -->
+            <div class="search-container">
+                <input type="text" id="searchAllBooksInput" placeholder="🔍 חפש ספר במסד הנתונים..." onkeyup="filterAllBooks()">
+                <button onclick="filterAllBooks()">חיפוש</button>
+            </div>
+    
+            <!-- 📖 רשימת כל הספרים -->
+            <div class="books-grid" id="allBooksList">
+                <!-- כאן יתווספו הספרים הדינאמיים ממסד הנתונים -->
+            </div>
+    
+            <!-- חזרה לרשימת הספרים האישית -->
+            <button onclick="navigateTo('books_template')">🔙 חזרה לרשימת הספרים</button>
+        </section>
+    
+    </template>
+
   
 
 

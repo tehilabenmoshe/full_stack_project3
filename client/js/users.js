@@ -40,7 +40,7 @@ export function loginUser(username, password) {
 
         xhr.onerror = function () {
             console.error("❌ Network error while logging in.");
-            reject("Network error");
+            reject("Invalid username or password");
         };
 
         xhr.send(JSON.stringify({ username, password }));

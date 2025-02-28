@@ -1,4 +1,4 @@
-import { books, saveBooks } from "../database/booksData.js";
+import { books, saveBooks } from "../DB/booksData.js";
 
 // פונקציה לשליפת כל הספרים
 export function getBooks() {

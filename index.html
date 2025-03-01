@@ -82,30 +82,48 @@
                 <!-- כאן יתווספו הספרים דינאמית -->
             </div>
 
+            <!-- <button id="addBookButton">➕ הוסף ספר</button> -->
+
+
+             <button onclick="navigateTo('add_books_template')">➕ הוסף ספר</button> 
+          
             <button onclick="navigateTo('login')">🔄 חזרה להתחברות</button>
     
-            <!-- הוספת ספר-->
-            <button onclick="addBook()">➕ הוסף ספר</button>
         </section>
     </template>
     
 
-     <!-- הוספת ספר-->
     <template id="add_books_template">
         <section class="add-books-section">
-            <h2 style="text-align: center;">📚 הוספת ספרים</h2> <!-- כותרת מרכזית -->
+            <h2>📖 הוספת ספר חדש</h2>
     
+            <form id="addBookForm">
+                <label for="title">שם הספר:</label>
+                <input type="text" id="title" required>
     
-            <!-- 📖 רשימת כל הספרים -->
-            <div class="books-grid" id="allBooksList">
-                <!-- כאן יתווספו הספרים הדינאמיים ממסד הנתונים -->
-            </div>
+                <label for="author">מחבר:</label>
+                <input type="text" id="author" required>
     
-            <!-- חזרה לרשימת הספרים האישית -->
-            <button onclick="navigateTo('books_template')">🔙 חזרה לספרים</button>
+                <label for="year">שנת הוצאה:</label>
+                <input type="number" id="year" required>
+    
+                <label for="status">סטטוס:</label>
+                <select id="status">
+                    <option value="To Read">To Read</option>
+                    <option value="Reading">Reading</option>
+                    <option value="Read">Read</option>
+                </select>
+    
+                <label for="description">תיאור:</label>
+                <textarea id="description"></textarea>
+    
+                <button type="submit">➕ הוסף ספר</button>
+            </form>
+    
+            <button onclick="navigateTo('books_template')">🔙 חזרה לספרים שלי</button>
         </section>
-    
     </template>
+    
 
   
 

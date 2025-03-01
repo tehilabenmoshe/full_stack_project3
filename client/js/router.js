@@ -10,10 +10,18 @@ function loadPage(page) {
     }
 }
 
+
 // Function to handle navigation without reloading the page
 export function navigateTo(page) {
     history.pushState({}, "", `#${page}`); // Update the URL
     loadPage(page); // Load the requested page
+
+        // 🔹 אם אנחנו ב-דף "add_books_template" צריך לוודא שהסקריפט של הוספת ספרים נטען
+        if (page === "add_books_template") {
+            import("./books.js").then(module => {
+                console.log("📚 books.js Loaded!");
+            }).catch(error => console.error("❌ Error loading Books.js", error));
+        }
 }
 
 // Event listener for all links with `data-route`

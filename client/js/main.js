@@ -1,6 +1,7 @@
 //אחראי לנהל את האירועים שקוראים בכל הדפים ולקרוא לפןנקציות המתאימות
 import { registerUser, loginUser } from "./users.js";
 import { navigateTo } from "./router.js";  // ✅ Ensure the correct case
+//import { loadBooks, displayBooks, deleteBook} from "./books.js";
 
 //import { fetchBooks, fetchAllBooks, addBookToUser } from "./fajax.js"; // ✅ Fetch books via FAJAX
 

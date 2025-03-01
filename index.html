@@ -90,16 +90,11 @@
     </template>
     
 
-     <!--  כל הספרים הקיימים במאגר -->
+     <!-- הוספת ספר-->
     <template id="add_books_template">
         <section class="add-books-section">
             <h2 style="text-align: center;">📚 הוספת ספרים</h2> <!-- כותרת מרכזית -->
     
-            <!-- 🔍 אזור חיפוש -->
-            <div class="search-container">
-                <input type="text" id="searchAllBooksInput" placeholder="🔍 חפש ספר במסד הנתונים..." onkeyup="filterAllBooks()">
-                <button onclick="filterAllBooks()">חיפוש</button>
-            </div>
     
             <!-- 📖 רשימת כל הספרים -->
             <div class="books-grid" id="allBooksList">
@@ -107,7 +102,7 @@
             </div>
     
             <!-- חזרה לרשימת הספרים האישית -->
-            <button onclick="navigateTo('books_template')">🔙 חזרה לספרים שלי</button>
+            <button onclick="navigateTo('books_template')">🔙 חזרה לספרים</button>
         </section>
     
     </template>

@@ -1,50 +1,25 @@
-import { books, saveBooks } from "../DB/booksData.js";
+import { getBooks, saveBooks, addBook, updateBook, deleteBook } from "../DB/booksData.js";
 
-// פונקציה לשליפת כל הספרים
-export function getBooks() {
-    return books.length ? books : { error: "No books found" };
+// 🔹 Handle getting books for a user
+export function fetchBooks(username) {
+    if (!username) return { error: "User not logged in" };
+    return getBooks(username); // ✅ Use `booksData.js`
 }
 
-// פונקציה להוספת ספר חדש
-export function addBook(title, author, status, description, year) {
-    if (!title || !author || !status || !year) {
-        return { error: "Missing required fields" }; // בדיקה שהכל נשלח
-    }
-
-    const newBook = {
-        id: books.length ? books[books.length - 1].id + 1 : 1,
-        title,
-        author,
-        status,
-        description,
-        year
-    };
-
-    books.push(newBook);
-    saveBooks(books); // שמירה ב-LocalStorage
-    return newBook;
+// 🔹 Handle adding a book for a user
+export function addBookToUser(username, title, author, status, description, year) {
+    if (!username) return { error: "User not logged in" };
+    return addBook(username, title, author, status, description, year); // ✅ Use `booksData.js`
 }
 
-// פונקציה לעדכון ספר קיים
-export function updateBook(id, updatedData) {
-    const bookIndex = books.findIndex(book => book.id === id);
-    if (bookIndex === -1) {
-        return { error: "Book not found" }; // ספר לא נמצא
-    }
-
-    books[bookIndex] = { ...books[bookIndex], ...updatedData };
-    saveBooks(books); // שמירה לאחר עדכון
-    return books[bookIndex];
+// 🔹 Handle updating a book
+export function updateUserBook(username, bookId, updatedData) {
+    if (!username) return { error: "User not logged in" };
+    return updateBook(bookId, updatedData); // ✅ Use `booksData.js`
 }
 
-// פונקציה למחיקת ספר
-export function deleteBook(id) {
-    const index = books.findIndex(book => book.id === id);
-    if (index === -1) {
-        return { error: "Book not found" }; // ספר לא נמצא
-    }
-
-    const deletedBook = books.splice(index, 1);
-    saveBooks(books); // שמירה לאחר מחיקה
-    return deletedBook[0]; // מחזירים את הספר שנמחק
+// 🔹 Handle deleting a book
+export function deleteUserBook(username, bookId) {
+    if (!username) return { error: "User not logged in" };
+    return deleteBook(bookId); // ✅ Use `booksData.js`
 }

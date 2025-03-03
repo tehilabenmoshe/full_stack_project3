@@ -1,4 +1,5 @@
 import { attachEventListeners } from "./main.js";
+import { loadBooks, displayBooks} from "./books.js";
 
 function loadPage(page) {
     let template = document.getElementById(page); // Find the template by ID
@@ -11,18 +12,29 @@ function loadPage(page) {
 }
 
 
-// Function to handle navigation without reloading the page
-export function navigateTo(page) {
-    history.pushState({}, "", `#${page}`); // Update the URL
-    loadPage(page); // Load the requested page
+export function navigateTo(templateId) {
+    const app = document.getElementById("app");
+    const template = document.getElementById(templateId);
 
-        // 🔹 אם אנחנו ב-דף "add_books_template" צריך לוודא שהסקריפט של הוספת ספרים נטען
-        if (page === "add_books_template") {
-            import("./books.js").then(module => {
-                console.log("📚 books.js Loaded!");
-            }).catch(error => console.error("❌ Error loading Books.js", error));
-        }
+    if (!template) {
+        console.error("❌ Template not found:", templateId);
+        return;
+    }
+
+    app.innerHTML = template.innerHTML; // Load new template
+    console.log(`✅ Loaded template: ${templateId}`);
+
+    // ✅ Attach event listeners AFTER the page content loads
+    setTimeout(() => {
+        attachEventListeners();
+    }, 0); 
+
+    if (templateId === "books_template") {
+        console.log("📚 Loading books...");
+        displayBooks(loadBooks());  // Load books for the logged-in user
+    }
 }
+
 
 // Event listener for all links with `data-route`
 document.addEventListener("click", function (event) {

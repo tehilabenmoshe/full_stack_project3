@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="./client/CSS/bookTemplate.css">
     <script type="module" src="./client/js/main.js"></script>  
     <script type="module" src="./client/js/router.js"></script>
+    <script type="module" src="./client/js/books.js"></script>
   
     
 </head>
@@ -82,13 +83,17 @@
                 <!-- כאן יתווספו הספרים דינאמית -->
             </div>
 
-            <!-- <button id="addBookButton">➕ הוסף ספר</button> -->
+            <div class="buttons-container">
+                <!-- <button id="addBookButton">➕ הוסף ספר</button> -->
+                <a href="#" data-route="add_books_template" class="btn">➕ הוסף ספר</a>
 
+                <!--<button onclick="navigateTo('login')">🔄 חזרה להתחברות</button>-->
+                <a href="#" data-route="login" class="btn">🔄 חזרה להתחברות</a>
+   
+                
 
-             <button onclick="navigateTo('add_books_template')">➕ הוסף ספר</button> 
-          
-            <button onclick="navigateTo('login')">🔄 חזרה להתחברות</button>
-    
+            </div>
+     
         </section>
     </template>
     
@@ -98,29 +103,30 @@
             <h2>📖 הוספת ספר חדש</h2>
     
             <form id="addBookForm">
-                <label for="title">שם הספר:</label>
+                <label for="title">שם הספר</label>
                 <input type="text" id="title" required>
     
-                <label for="author">מחבר:</label>
+                <label for="author">מחבר</label>
                 <input type="text" id="author" required>
     
-                <label for="year">שנת הוצאה:</label>
+                <label for="year">שנת הוצאה</label>
                 <input type="number" id="year" required>
     
-                <label for="status">סטטוס:</label>
+                <label for="status">סטטוס</label>
                 <select id="status">
                     <option value="To Read">To Read</option>
                     <option value="Reading">Reading</option>
                     <option value="Read">Read</option>
                 </select>
     
-                <label for="description">תיאור:</label>
+                <label for="description">תיאור</label>
                 <textarea id="description"></textarea>
     
                 <button type="submit">➕ הוסף ספר</button>
             </form>
     
-            <button onclick="navigateTo('books_template')">🔙 חזרה לספרים שלי</button>
+            <!--<button onclick="navigateTo('books_template')">🔙 חזרה לספרים שלי</button> -->
+            <a href="#" data-route="books_template" class="btn">🔙 חזרה לספרים שלי</a>
         </section>
     </template>
     

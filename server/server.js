@@ -1,5 +1,7 @@
-import { getBooks, addBook, updateBook, deleteBook } from "./booksAPI.js";
+import { fetchBooks, addBookToUser, updateUserBook, deleteUserBook } from "./booksAPI.js";
 import { getUsers, addUser, authenticateUser } from "./usersAPI.js";
+
+let currentLoggedInUser = null; // ✅ Store logged-in user in memory
 
 // פונקציה שמטפלת בבקשות מהלקוח
 export function handleRequest(request) {
@@ -12,16 +14,21 @@ export function handleRequest(request) {
 
     switch (endpoint) {
         case "/books":
-            if (method === "GET") response = getBooks();
-            if (method === "POST") {
-                if (!data || !data.title || !data.author) {
-                    console.warn(`⚠️ Missing book fields!`);
-                    response = { error: "Missing required book fields" };
+            if (method === "GET") {
+                response = fetchBooks(); // ✅ Always load books from the server
+            } 
+            else if (method === "POST") {
+                if (!data || !data.username) {
+                    console.warn("⚠️ Missing book fields!");
+                    console.warn("❌ Missing username in request");
                 } else {
-                    response = addBook(data.title, data.author, data.status, data.description, data.year);
+                    console.log("📚 Fetching books for:", data.username);
+                    response = fetchBooks(data.username);
                 }
             }
             break;
+
+        
 
         case "/books/update":
             if (method === "PUT") {
@@ -29,7 +36,7 @@ export function handleRequest(request) {
                     console.warn(`⚠️ Missing book ID!`);
                     response = { error: "Missing book ID" };
                 } else {
-                    response = updateBook(data.id, data);
+                    response = updateUserBook(data.id, data);
                 }
             }
             break;
@@ -40,7 +47,7 @@ export function handleRequest(request) {
                     console.warn(`⚠️ Missing book ID for delete!`);
                     response = { error: "Missing book ID" };
                 } else {
-                    response = deleteBook(data.id);
+                    response = deleteUserBook(data.id);
                 }
             }
             break;
@@ -70,13 +77,33 @@ export function handleRequest(request) {
             }
             break;
 
+       
+
         case "/users/login":
             if (method === "POST") {
                 if (!data || !data.username || !data.password) {
                     console.warn(`⚠️ Missing login credentials!`);
-                    response = { error: "Missing login fields" };
+                    response = { error: "Missing login fields" }; 
                 } else {
-                    response = authenticateUser(data.username, data.password);
+                      let authResponse = authenticateUser(data.username, data.password);
+                        if (authResponse.error) {
+                            response = authResponse;
+                        } else {
+                            console.log("✅ User authenticated:", authResponse.username);
+                            currentLoggedInUser = authResponse.username; // ✅ Store the logged-in user
+                            response = authResponse;
+                        }
+                    }
+             }
+            break;
+            
+        case "/users/session": // ✅ New endpoint to get the logged-in user
+             if (method === "GET") {
+                if (!currentLoggedInUser) {
+                    response = { error: "No user logged in" };
+                } else {
+                        console.log("👤 Returning logged-in user:", currentLoggedInUser);
+                        response = { username: currentLoggedInUser };
                 }
             }
             break;

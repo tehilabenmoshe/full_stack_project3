@@ -9,6 +9,7 @@ import { navigateTo } from "./router.js";  // ✅ Ensure the correct case
 export function attachEventListeners() {
     let loginForm = document.querySelector(".login-form");
     let registerForm = document.querySelector(".register-form");
+   
 
     if (loginForm) {
         loginForm.addEventListener("submit", async function (event) {
@@ -16,8 +17,9 @@ export function attachEventListeners() {
             let username = document.getElementById("username").value;
             let password = document.getElementById("password").value;
             let errorMessage = document.getElementById("login-error-message");
-            
+            console.log("Registering User:", username, password);
 
+            
             try {
                 let message = await loginUser(username, password); // בדיקה האם המשתמש רשום או שיש להוסיף אותו
                 console.log("✅ Login successful:", message);
@@ -33,21 +35,29 @@ export function attachEventListeners() {
         });
     }
 
+    console.log("🔍 Checking for register form:", document.querySelector(".register-form"));
+
+
     if (registerForm) {
         registerForm.addEventListener("submit", async function (event) {
             event.preventDefault();
+            console.log("🚀 Register button clicked! Form submission prevented.");
             let username = document.getElementById("register-username").value;
             let password = document.getElementById("register-password").value;
-
+    
+            console.log("📩 Registering user:", { username, password }); // ✅ Debugging line
+    
             try {
                 let message = await registerUser(username, password);
                 console.log("✅ Registration successful:", message);
                 navigateTo("books_template");
             } catch (error) {
+                console.error("❌ Registration failed:", error);
                 alert(error);
             }
         });
     }
+    
 }
 
 
@@ -111,12 +121,6 @@ function loadAllBooks() {
         });
 }
 
-// 🔹 Add Book Button Click
-window.addBook = function () {
-    console.log("📖 Navigating to add books page...");
-    navigateTo("add_books_template");
-    setTimeout(loadAllBooks, 500); // Load books after navigating
-}
 
 // 🔹 Add Book to User Collection
 window.addBookToUser = function (title, author) {

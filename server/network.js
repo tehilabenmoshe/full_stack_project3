@@ -29,9 +29,6 @@ class Network {
             console.log(`✅ Response received from ${request.endpoint}`, response);
             console.log("🔎 Debug: Response before callback:", response);
             callback(response);
-
-            
-            
         }, delay);
         
 

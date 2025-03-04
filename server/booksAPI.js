@@ -1,25 +1,34 @@
-import { getBooks, saveBooks, addBook, updateBook, deleteBook } from "../DB/booksData.js";
+import { getBooks, addBook, updateBook, deleteBook } from "../DB/booksData.js";
+import { getLoggedInUser } from "../DB/usersData.js";
 
-// 🔹 Handle getting books for a user
-export function fetchBooks(username) {
-    if (!username) return { error: "User not logged in" };
-    return getBooks(username); // ✅ Use `booksData.js`
+// ✅ פונקציה לשליפת כל הספרים של המשתמש המחובר
+export function fetchBooks() {
+    const user = getLoggedInUser();
+    if (!user) return { error: "No user logged in" };
+
+    return getBooks();
 }
 
-// 🔹 Handle adding a book for a user
-export function addBookToUser(username, title, author, status, description, year) {
-    if (!username) return { error: "User not logged in" };
-    return addBook(username, title, author, status, description, year); // ✅ Use `booksData.js`
+// ✅ פונקציה להוספת ספר למשתמש המחובר
+export function addNewBook(title, author, status, description, year) {
+    const user = getLoggedInUser();
+    if (!user) return { error: "No user logged in" };
+
+    return addBook(title, author, status, description, year);
 }
 
-// 🔹 Handle updating a book
-export function updateUserBook(username, bookId, updatedData) {
-    if (!username) return { error: "User not logged in" };
-    return updateBook(bookId, updatedData); // ✅ Use `booksData.js`
+// ✅ פונקציה לעדכון ספר קיים (למשתמש המחובר בלבד)
+export function updateExistingBook(bookId, updatedData) {
+    const user = getLoggedInUser();
+    if (!user) return { error: "No user logged in" };
+
+    return updateBook(bookId, updatedData);
 }
 
-// 🔹 Handle deleting a book
-export function deleteUserBook(username, bookId) {
-    if (!username) return { error: "User not logged in" };
-    return deleteBook(bookId); // ✅ Use `booksData.js`
+// ✅ פונקציה למחיקת ספר (רק של המשתמש המחובר)
+export function removeBook(bookId) {
+    const user = getLoggedInUser();
+    if (!user) return { error: "No user logged in" };
+
+    return deleteBook(bookId);
 }

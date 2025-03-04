@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// פונקציה לטעינת כל הספרים מהשרת
+
 function loadBooks() {
     console.log("📚 Fetching books...");
 
@@ -17,7 +17,7 @@ function loadBooks() {
             console.log("👤 Logged-in user:", user.username);
 
             const xhr = new FXMLHttpRequest();
-            xhr.open("POST", "/books"); // ✅ Change to POST to send username
+            xhr.open("GET", `/books?username=${user.username}`); 
             xhr.setRequestHeader("Content-Type", "application/json");
 
             xhr.onload = function () {
@@ -43,13 +43,14 @@ function loadBooks() {
                 document.getElementById("booksList").innerHTML = "<p>❌ שגיאת רשת.</p>";
             };
 
-            xhr.send(JSON.stringify({ username: user.username })); // ✅ Send username from server
+            xhr.send();
         })
         .catch(error => {
             console.error("🚨 Failed to fetch logged-in user:", error);
             document.getElementById("booksList").innerHTML = "<p>❌ שגיאת רשת.</p>";
         });
 }
+
 
 
 

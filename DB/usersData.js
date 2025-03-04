@@ -1,53 +1,34 @@
 const STORAGE_KEY = "usersData";
+const LOGGED_IN_USER_KEY = "loggedInUser"; // ✅ מפתח עבור המשתמש המחובר
 
-// פונקציה לטעינת משתמשים מ-LocalStorage
+// ✅ פונקציה לטעינת כל המשתמשים מ-LocalStorage
 function loadUsers() {
     const storedUsers = localStorage.getItem(STORAGE_KEY);
     return storedUsers ? JSON.parse(storedUsers) : [];
 }
 
-// פונקציה לשמירת משתמשים ב-LocalStorage
+// ✅ פונקציה לשמירת כל המשתמשים ב-LocalStorage
 function saveUsers(users) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
 }
 
-
-// פונקציה להוספת משתמש ל-LocalStorage 
-function addUserToStorage(user) {  
-    const users = loadUsers();
-    users.push(user);
-    saveUsers(users);
-}
-
-// 🔹 Authenticate user
-function authenticateUser(username, password) {
-    const users = loadUsers();
-    const user = users.find(user => user.username === username && user.password === password);
-
-    if (!user) return { error: "Invalid username or password" };
-
-    // 🔹 Save logged-in user in localStorage
-    localStorage.setItem(LOGGED_IN_USER_KEY, username);
-    return { message: "Login successful!" };
-}
-
-// 🔹 Get the currently logged-in user
+// ✅ פונקציה לקבלת המשתמש המחובר
 function getLoggedInUser() {
     const user = localStorage.getItem(LOGGED_IN_USER_KEY);
-    return user ? JSON.parse(user) : null;
+    return user ? JSON.parse(user) : null; // אם אין משתמש מחובר נחזיר null
 }
 
-// 🔹 Log out the user
+// ✅ פונקציה לעדכון המשתמש המחובר
+function setLoggedInUser(username) {
+    localStorage.setItem(LOGGED_IN_USER_KEY, JSON.stringify({ username }));
+}
+
+// ✅ פונקציה להתנתקות משתמש
 function logoutUser() {
     localStorage.removeItem(LOGGED_IN_USER_KEY);
 }
 
-
-
-
-// טעינת משתמשים
+// 🔹 טוענים את כל המשתמשים לזיכרון
 const users = loadUsers();
 
-
-
-export { users, loadUsers, saveUsers, addUserToStorage, authenticateUser, getLoggedInUser, logoutUser };
+export { users,loadUsers, saveUsers, getLoggedInUser, setLoggedInUser, logoutUser };

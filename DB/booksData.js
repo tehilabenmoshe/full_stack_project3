@@ -1,30 +1,41 @@
 const STORAGE_KEY = "booksData";
-import { loadUsers, saveUsers, getLoggedInUser } from "./usersData.js";
+import { getLoggedInUser, loadUsers, saveUsers } from "./usersData.js";
 
-
-// 🔹 Get books for the logged-in user
-export function getBooks(username) {
-    const users = loadUsers();
-    const user = users.find(user => user.username === username);
-    return user ? user.books : [];
+function ensureLoggedInUser() {
+    const user = getLoggedInUser();
+    if (!user) throw new Error("❌ No user logged in");
+    return user;
 }
 
-// 🔹 Save books for the logged-in user
-export function saveBooks(username, books) {
-    const users = loadUsers();
-    const user = users.find(user => user.username === username);
 
-    if (user) {
-        user.books = books;
+// 🔹 שליפת הספרים רק למשתמש המחובר
+export function getBooks() {
+    const user = ensureLoggedInUser();
+    const users = loadUsers();
+    const loggedInUser = users.find(u => u.username === user.username);
+    return loggedInUser ? loggedInUser.books || [] : [];
+}
+
+
+// 🔹 שמירת ספרים למשתמש המחובר בלבד
+export function saveBooks(books)
+ {
+    const user = ensureLoggedInUser();
+    const users = loadUsers();
+    const loggedInUserIndex = users.findIndex(u => u.username === user.username);
+
+    if (loggedInUserIndex !== -1) {
+        users[loggedInUserIndex].books = books;
         saveUsers(users);
     }
 }
 
-// 🔹 Add a new book for a user
-export function addBook(username, title, author, status, description, year) {
-    const books = getBooks(username);
+// 🔹 הוספת ספר למשתמש המחובר בלבד
+export function addBook(title, author, status, description, year) {
+    const user = ensureLoggedInUser();
+    const books = getBooks();
     const newBook = {
-        id: Date.now(),
+        id: Date.now(), // ✅ שימוש ב-ID ייחודי
         title,
         author,
         status,
@@ -33,32 +44,30 @@ export function addBook(username, title, author, status, description, year) {
     };
 
     books.push(newBook);
-    saveBooks(username, books);
+    saveBooks(books);
     return { message: "Book added successfully!", book: newBook };
 }
 
-// 🔹 Update a book
+// 🔹 עדכון ספר של משתמש מחובר
 export function updateBook(bookId, updatedData) {
-    const username = getLoggedInUser();
-    let books = getBooks(username);
-
+    const user = ensureLoggedInUser();
+    const books = getBooks();
     const index = books.findIndex(book => book.id === bookId);
     if (index === -1) return { error: "Book not found" };
 
     books[index] = { ...books[index], ...updatedData };
-    saveBooks(username, books);
+    saveBooks(books);
     return books[index];
 }
 
-// 🔹 Delete a book
+// 🔹 מחיקת ספר של משתמש מחובר
 export function deleteBook(bookId) {
-    const username = getLoggedInUser();
-    let books = getBooks(username);
-
+    const user = ensureLoggedInUser();
+    const books = getBooks();
     const index = books.findIndex(book => book.id === bookId);
     if (index === -1) return { error: "Book not found" };
 
     const deletedBook = books.splice(index, 1);
-    saveBooks(username, books);
+    saveBooks(books);
     return deletedBook[0];
 }

@@ -1,6 +1,8 @@
 //אחראי לנהל את האירועים שקוראים בכל הדפים ולקרוא לפןנקציות המתאימות
 import { registerUser, loginUser } from "./users.js";
 import { navigateTo } from "./router.js";  // ✅ Ensure the correct case
+import { addBookToUser, loadBooks } from "./books.js";
+
 //import { loadBooks, displayBooks, deleteBook} from "./books.js";
 
 //import { fetchBooks, fetchAllBooks, addBookToUser } from "./fajax.js"; // ✅ Fetch books via FAJAX
@@ -9,7 +11,6 @@ import { navigateTo } from "./router.js";  // ✅ Ensure the correct case
 export function attachEventListeners() {
     let loginForm = document.querySelector(".login-form");
     let registerForm = document.querySelector(".register-form");
-   
 
     if (loginForm) {
         loginForm.addEventListener("submit", async function (event) {
@@ -60,67 +61,27 @@ export function attachEventListeners() {
     
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+    const addBookButton = document.querySelector("#addBookForm button");
 
-// 🔹 Load Books in User Collection
-function loadBooks() {
-    console.log("📚 Fetching books from the server...");
-    fetchBooks()
-        .then(books => {
-            console.log("✅ Books received:", books);
-            const booksList = document.getElementById("booksList");
-            if (!booksList) return;
+    if (addBookButton) {
+        addBookButton.addEventListener("click", function (event) {
+            event.preventDefault(); // ✅ Prevent form submission
 
-            booksList.innerHTML = ""; // Clear previous books
+            let title = document.getElementById("title").value;
+            let author = document.getElementById("author").value;
 
-            books.forEach(book => {
-                const bookCard = document.createElement("div");
-                bookCard.classList.add("book-card");
+            console.log(`📖 Trying to add book: ${title}, ${author}`);
 
-                bookCard.innerHTML = `
-                    <h3>${book.title}</h3>
-                    <p>🖊️ ${book.author}</p>
-                    <p>📅 ${book.year || "Unknown Year"}</p>
-                    <p>📖 ${book.status}</p>
-                    <p>${book.description || "No description available"}</p>
-                `;
+            if (!title || !author) {
+                alert("❌ חייב להזין שם ספר ומחבר!");
+                return;
+            }
 
-                booksList.appendChild(bookCard);
-            });
-        })
-        .catch(error => {
-            console.error("❌ Error fetching books:", error);
+            addBookToUser(title, author);
         });
-}
-
-// 🔹 Load All Books in Database
-function loadAllBooks() {
-    console.log("📚 Fetching all books from the database...");
-    fetchAllBooks()
-        .then(books => {
-            console.log("✅ All Books received:", books);
-            const allBooksList = document.getElementById("allBooksList");
-            if (!allBooksList) return;
-
-            allBooksList.innerHTML = ""; // Clear previous books
-
-            books.forEach(book => {
-                const bookCard = document.createElement("div");
-                bookCard.classList.add("book-card");
-
-                bookCard.innerHTML = `
-                    <h3>${book.title}</h3>
-                    <p>🖊️ ${book.author}</p>
-                    <button onclick="addBookToUser('${book.title}', '${book.author}')">➕ הוסף לספרים שלי</button>
-                `;
-
-                allBooksList.appendChild(bookCard);
-            });
-        })
-        .catch(error => {
-            console.error("❌ Error fetching all books:", error);
-        });
-}
-
+    }
+});
 
 // 🔹 Add Book to User Collection
 window.addBookToUser = function (title, author) {
@@ -134,6 +95,8 @@ window.addBookToUser = function (title, author) {
             console.error("❌ Error adding book:", error);
         });
 };
+
+
 
 // 🔹 Load Books When Page Loads
 document.addEventListener("DOMContentLoaded", () => {

@@ -2,11 +2,43 @@ import { FXMLHttpRequest } from "./fajax.js";
 import { getLoggedInUser } from "./users.js";
 
 
-document.addEventListener("DOMContentLoaded", function () {
-    if (document.getElementById("booksList")) {
-        loadBooks(); // טוען ספרים כשהעמוד נטען
-    }
-});
+function addBookToUser(title, author) {
+    console.log(`📖 Adding book: ${title}, ${author}`);
+
+    getLoggedInUser()
+        .then(user => {
+            console.log("👤 Logged-in user:", user.username);
+
+            const xhr = new FXMLHttpRequest();
+            xhr.open("POST", "/books/add"); // ✅ Use POST for adding a book
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.onload = function () {
+                const response = JSON.parse(xhr.responseText);
+
+                if (response.error) {
+                    console.error("❌ Error adding book:", response.error);
+                } else {
+                    console.log("✅ Book added successfully:", response);
+                    alert(`📖 ${title} נוסף לספרים שלך!`);
+                    loadBooks(); // ✅ Reload books after adding
+                }
+            };
+
+            xhr.onerror = function () {
+                console.error("❌ Network error while adding book.");
+            };
+
+            xhr.send(JSON.stringify({ 
+                username: user.username, // ✅ Send username from session
+                title: title,
+                author: author 
+            }));
+        })
+        .catch(error => {
+            console.error("🚨 Failed to fetch logged-in user:", error);
+        });
+}
 
 
 function loadBooks() {
@@ -27,14 +59,14 @@ function loadBooks() {
 
                     if (!response || response.error) {
                         console.warn("⚠️ No books found.");
-                        displayBooks([]);
+                        updateBookList([]);
                         return;
                     }
 
-                    displayBooks(response);
+                    updateBookList(response);
                 } catch (e) {
                     console.error("❌ JSON Parsing Error:", e);
-                    displayBooks([]);
+                    updateBookList([]);
                 }
             };
 
@@ -51,19 +83,14 @@ function loadBooks() {
         });
 }
 
-
-
-
-
-// פונקציה להצגת הספרים בתוך `books_template`
-export function displayBooks(books) {
+// 🔹 Function to update the book list in the UI
+function updateBookList(books) {
     if (!Array.isArray(books)) {
         console.error("❌ Invalid books data:", books);
         books = []; // Ensure books is always an array
     }
 
     const booksList = document.getElementById("booksList");
-
     if (!booksList) {
         console.error("❌ Error: booksList element not found!");
         return;
@@ -89,8 +116,8 @@ export function displayBooks(books) {
 
         booksList.appendChild(bookElement);
     });
-}
 
+}
 
 // פונקציה למחיקת ספר
 function deleteBook(bookId) {
@@ -119,5 +146,6 @@ function deleteBook(bookId) {
 
 
 
+
 // ייצוא הפונקציות במידה וצריך לשלב במקומות אחרים
-export { loadBooks, deleteBook };
+export { loadBooks, deleteBook, addBookToUser, updateBookList };

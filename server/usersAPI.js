@@ -51,6 +51,6 @@ export function authenticateUser(username, password) {
     }
 
     console.log("✅ User authenticated:", user);
-    return { username: user.username, books: user.books || [] }; // ✅ Ensure books array is included
+    return { username: user.username, books: user.books || [] }; // ✅ Ensure books array is included 
 }
 

@@ -6,40 +6,7 @@ import { loadUsers, saveUsers, getLoggedInUser } from "./usersData.js";
 export function getBooks(username) {
     const users = loadUsers();
     const user = users.find(user => user.username === username);
-    return user ? user.books : [
-        {
-            id: 1,
-            title: "Harry Potter and the Sorcerer's Stone",
-            author: "J.K. Rowling",
-            status: "To Read",
-            description: "The first book in the Harry Potter series.",
-            year: 1997
-        },
-        {
-            id: 2,
-            title: "The Hobbit",
-            author: "J.R.R. Tolkien",
-            status: "Reading",
-            description: "A fantasy novel about Bilbo Baggins' adventure.",
-            year: 1937
-        },
-        {
-            id: 3,
-            title: "The Catcher in the Rye",
-            author: "J.D. Salinger",
-            status: "Read",
-            description: "A novel about teenage angst and rebellion.",
-            year: 1951
-        },
-        {
-            id: 4,
-            title: "1984",
-            author: "George Orwell",
-            status: "To Read",
-            description: "A dystopian novel about totalitarianism.",
-            year: 1949
-        }
-    ];
+    return user ? user.books : [];
 }
 
 // 🔹 Save books for the logged-in user
@@ -95,8 +62,3 @@ export function deleteBook(bookId) {
     saveBooks(username, books);
     return deletedBook[0];
 }
-
-// טוענים את הנתונים בתחילת העבודה
-//const books = loadBooks();
-
-//export { books, saveBooks };

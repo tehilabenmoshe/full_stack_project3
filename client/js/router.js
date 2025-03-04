@@ -25,7 +25,7 @@ export function navigateTo(templateId) {
     console.log(`✅ Loaded template: ${templateId}`);
 
     // ✅ Attach event listeners AFTER the page content loads
-    setTimeout(() => {
+    setTimeout(() => { 
         attachEventListeners();
     }, 0); 
 

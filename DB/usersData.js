@@ -12,7 +12,7 @@ function saveUsers(users) {
 }
 
 
-// פונקציה להוספת משתמש ל-LocalStorage
+// פונקציה להוספת משתמש ל-LocalStorage 
 function addUserToStorage(user) {  
     const users = loadUsers();
     users.push(user);
@@ -33,7 +33,8 @@ function authenticateUser(username, password) {
 
 // 🔹 Get the currently logged-in user
 function getLoggedInUser() {
-    return localStorage.getItem(LOGGED_IN_USER_KEY);
+    const user = localStorage.getItem(LOGGED_IN_USER_KEY);
+    return user ? JSON.parse(user) : null;
 }
 
 // 🔹 Log out the user

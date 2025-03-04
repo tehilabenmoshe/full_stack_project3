@@ -61,6 +61,7 @@ export function attachEventListeners() {
     
 }
 
+
 document.addEventListener("DOMContentLoaded", function () {
     const addBookButton = document.querySelector("#addBookForm button");
 

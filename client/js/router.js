@@ -1,5 +1,5 @@
 import { attachEventListeners } from "./main.js";
-import { loadBooks, displayBooks} from "./books.js";
+import { loadBooks } from "./books.js"; // ✅ Import the new function
 
 function loadPage(page) {
     let template = document.getElementById(page); // Find the template by ID
@@ -10,7 +10,6 @@ function loadPage(page) {
         document.getElementById("app").innerHTML = "<h2>❌ דף לא נמצא</h2><p>נסה שוב מאוחר יותר.</p>"; // Page not found
     }
 }
-
 
 export function navigateTo(templateId) {
     const app = document.getElementById("app");
@@ -31,10 +30,9 @@ export function navigateTo(templateId) {
 
     if (templateId === "books_template") {
         console.log("📚 Loading books...");
-        displayBooks(loadBooks());  // Load books for the logged-in user
+        loadBooks();  
     }
 }
-
 
 // Event listener for all links with `data-route`
 document.addEventListener("click", function (event) {

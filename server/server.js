@@ -32,6 +32,17 @@ export function handleRequest(request) {
             if (method === "POST") response = loginUser(data.username, data.password);
             break;
 
+        case "/users/session":  // ✅ NEW ENDPOINT
+            if (method === "GET") {
+                if (!currentLoggedInUser) {
+                    response = { error: "No user logged in" };
+                } else {
+                    console.log("👤 Returning logged-in user:", currentLoggedInUser);
+                    response = { username: currentLoggedInUser };
+                }
+            }
+            break;
+
         default:
             response = { error: "Unknown endpoint" };
     }

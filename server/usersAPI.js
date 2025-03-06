@@ -1,4 +1,7 @@
-import { users, saveUsers, getLoggedInUser, setLoggedInUser } from "../DB/usersData.js";
+
+import {loadUsers, saveUsers, getLoggedInUser, setLoggedInUser } from "../DB/usersData.js";
+
+
 
 // ✅ פונקציה לשליפת כל המשתמשים
 export function fetchUsers() {
@@ -23,13 +26,23 @@ export function registerUser(username, password) {
     return newUser;
 }
 
-// ✅ פונקציה לבדיקה אם משתמש קיים (התחברות)
+
+// ✅ פונקציה להתחברות משתמש קיים
 export function loginUser(username, password) {
-    const user = users.find(user => user.username === username && user.password === password);
-    if (!user) {
-        return { error: "Invalid username or password" };
+    const users = loadUsers() || []; // טוען את כל המשתמשים או מחזיר מערך ריק
+    if (users.length === 0) {
+        return { error: "No users found" }; // אם אין משתמשים כלל
     }
 
-    setLoggedInUser(username); // ✅ שמירת המשתמש המחובר
+    const user = users.find(u => u.username === username && u.password === password);
+    
+    if (!user) {
+        return { error: "Invalid username or password" }; // שם משתמש או סיסמה שגויים
+    }
+
+    setLoggedInUser(username); // ✅ שומר את המשתמש המחובר
     return user;
 }
+
+
+

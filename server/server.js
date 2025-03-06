@@ -1,5 +1,8 @@
 import { fetchBooks, addNewBook, updateExistingBook, removeBook } from "./booksAPI.js";
 import { fetchUsers, registerUser, loginUser } from "./usersAPI.js";
+import { getLoggedInUser, setLoggedInUser } from "../DB/usersData.js";
+
+let currentLoggedInUser = getLoggedInUser(); // ✅ טעינת משתמש מחובר אם קיים
 
 // ✅ פונקציה שמטפלת בבקשות ה-API
 export function handleRequest(request) {
@@ -11,36 +14,50 @@ export function handleRequest(request) {
 
     switch (endpoint) {
         case "/books":
-            if (method === "GET") response = fetchBooks();
-            else if (method === "POST") response = addNewBook(data.title, data.author, data.status, data.description, data.year);
+            if (method === "GET") {
+                response = currentLoggedInUser ? fetchBooks(currentLoggedInUser.username) : { error: "No user logged in" };
+
+            } 
+            else if (method === "POST") {
+                response = currentLoggedInUser ? addNewBook(currentLoggedInUser.username, data.title, data.author, data.status, data.description, data.year)
+                : { error: "No user logged in" };
+
+            }
             break;
 
         case "/books/update":
-            if (method === "PUT") response = updateExistingBook(data.id, data);
+            if (method === "PUT") {
+                response = currentLoggedInUser ? updateExistingBook(data.id, data)
+                                               : { error: "No user logged in" };
+            }
             break;
 
         case "/books/delete":
-            if (method === "DELETE") response = removeBook(data.id);
+            if (method === "DELETE") {
+                response = currentLoggedInUser ? removeBook(data.id)
+                                               : { error: "No user logged in" };
+            }
             break;
 
         case "/users":
-            if (method === "GET") response = fetchUsers();
-            else if (method === "POST") response = registerUser(data.username, data.password);
+            if (method === "GET") {
+                response = fetchUsers();
+            } 
+            else if (method === "POST") {
+                response = registerUser(data.username, data.password);
+            }
             break;
 
         case "/users/login":
-            if (method === "POST") response = loginUser(data.username, data.password);
+            response = loginUser(data.username, data.password);
+            if (!response.error) {
+                setLoggedInUser(data.username); // ✅ שמירת המשתמש ב-LocalStorage
+                currentLoggedInUser = response; // ✅ שמירת המשתמש המחובר
+            }
             break;
 
-        case "/users/session":  // ✅ NEW ENDPOINT
-            if (method === "GET") {
-                if (!currentLoggedInUser) {
-                    response = { error: "No user logged in" };
-                } else {
-                    console.log("👤 Returning logged-in user:", currentLoggedInUser);
-                    response = { username: currentLoggedInUser };
-                }
-            }
+        case "/users/session":
+            response = getLoggedInUser() || { error: "No user session" }; // ✅ בדיקה דרך LocalStorage
             break;
 
         default:

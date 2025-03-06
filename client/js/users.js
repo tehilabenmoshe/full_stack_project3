@@ -51,7 +51,6 @@ export function loginUser(username, password) {
         };
 
         xhr.onerror = function () {
-            console.error("❌ Network error while logging in.");
             reject("Invalid username or password");
         };
 

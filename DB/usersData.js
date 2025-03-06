@@ -2,33 +2,35 @@ const STORAGE_KEY = "usersData";
 const LOGGED_IN_USER_KEY = "loggedInUser"; // ✅ מפתח עבור המשתמש המחובר
 
 // ✅ פונקציה לטעינת כל המשתמשים מ-LocalStorage
-function loadUsers() {
+export function loadUsers() {
     const storedUsers = localStorage.getItem(STORAGE_KEY);
     return storedUsers ? JSON.parse(storedUsers) : [];
 }
 
 // ✅ פונקציה לשמירת כל המשתמשים ב-LocalStorage
-function saveUsers(users) {
+export function saveUsers(users) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
 }
 
 // ✅ פונקציה לקבלת המשתמש המחובר
-function getLoggedInUser() {
+export function getLoggedInUser() {
     const user = localStorage.getItem(LOGGED_IN_USER_KEY);
     return user ? JSON.parse(user) : null; // אם אין משתמש מחובר נחזיר null
 }
 
 // ✅ פונקציה לעדכון המשתמש המחובר
-function setLoggedInUser(username) {
-    localStorage.setItem(LOGGED_IN_USER_KEY, JSON.stringify({ username }));
+export function setLoggedInUser(username) {
+    const users = loadUsers(); // ✅ תמיד נטען את המשתמשים כדי לקבל נתונים מעודכנים
+    const user = users.find(u => u.username === username);
+    if (user) {
+        localStorage.setItem(LOGGED_IN_USER_KEY, JSON.stringify(user)); // שומר את כל הנתונים של המשתמש
+    }
 }
 
 // ✅ פונקציה להתנתקות משתמש
-function logoutUser() {
+export function logoutUser() {
     localStorage.removeItem(LOGGED_IN_USER_KEY);
 }
 
-// 🔹 טוענים את כל המשתמשים לזיכרון
-const users = loadUsers();
-
-export { users,loadUsers, saveUsers, getLoggedInUser, setLoggedInUser, logoutUser };
+// ✅ ייצוא כל הפונקציות
+export default { loadUsers, saveUsers, getLoggedInUser, setLoggedInUser, logoutUser };

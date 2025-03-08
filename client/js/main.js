@@ -79,13 +79,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            addBookToUser(title, author);
+            addBook(title, author);
         });
     }
 });
 
 // 🔹 Add Book to User Collection
-window.addBookToUser = function (title, author) {
+window.addBook = function (title, author) {
     console.log(`📖 Adding book: ${title}`);
     addBookToUser(title, author)
         .then(response => {

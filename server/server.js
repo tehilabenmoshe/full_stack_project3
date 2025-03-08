@@ -21,14 +21,39 @@ export function handleRequest(request) {
         case "/books":
             if (method === "GET") {
                 response = currentLoggedInUser ? fetchBooks(currentLoggedInUser.username) : { error: "No user logged in" };
-
             } 
             else if (method === "POST") {
-                response = currentLoggedInUser ? addNewBook(currentLoggedInUser.username, data.title, data.author, data.status, data.description, data.year)
-                : { error: "No user logged in" };
-
+                if (!data || !data.username) {
+                    response = { error: "Missing username in request" };
+                } else {
+                    console.log("📚 Fetching books for:", data.username);
+                    response = fetchBooks(data.username); // ✅ Fetch books for requested user
+                }
             }
             break;
+
+
+            case "/books/add": // ✅ New endpoint for adding a book
+            if (method === "POST") {
+                if (!currentLoggedInUser) {
+                    response = { error: "No user logged in" };
+                } else if (!data || !data.title || !data.author) {
+                    response = { error: "Missing book details" };
+                } else {
+                    console.log(`📖 Adding book for ${currentLoggedInUser.username}:`, data.title);
+                    response = addNewBook(
+                        currentLoggedInUser.username, 
+                        data.title, 
+                        data.author, 
+                        data.status || "To Read", // ✅ Default status
+                        data.description || "", 
+                        data.year || "Unknown"
+                    );
+                }
+            }
+            break;
+        
+
 
         case "/books/update":
             if (method === "PUT") {

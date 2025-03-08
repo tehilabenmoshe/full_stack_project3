@@ -10,7 +10,7 @@ function addBookToUser(title, author) {
             console.log("👤 Logged-in user:", user.username);
 
             const xhr = new FXMLHttpRequest();
-            xhr.open("POST", "/books/add"); // ✅ Use POST for adding a book
+            xhr.open("POST", "/books"); // ✅ Use POST for adding a book
             xhr.setRequestHeader("Content-Type", "application/json");
 
             xhr.onload = function () {
@@ -49,7 +49,7 @@ function loadBooks() {
             console.log("👤 Logged-in user:", user.username);
 
             const xhr = new FXMLHttpRequest();
-            xhr.open("GET", `/books?username=${user.username}`); 
+            xhr.open("POST", "/books"); // ✅ Use POST instead of GET with query params
             xhr.setRequestHeader("Content-Type", "application/json");
 
             xhr.onload = function () {
@@ -75,13 +75,14 @@ function loadBooks() {
                 document.getElementById("booksList").innerHTML = "<p>❌ שגיאת רשת.</p>";
             };
 
-            xhr.send();
+            xhr.send(JSON.stringify({ username: user.username })); // ✅ Send username in body
         })
         .catch(error => {
             console.error("🚨 Failed to fetch logged-in user:", error);
             document.getElementById("booksList").innerHTML = "<p>❌ שגיאת רשת.</p>";
         });
 }
+
 
 // 🔹 Function to update the book list in the UI
 function updateBookList(books) {

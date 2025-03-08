@@ -1,11 +1,16 @@
 import { fetchBooks, addNewBook, updateExistingBook, removeBook } from "./booksAPI.js";
 import { fetchUsers, registerUser, loginUser } from "./usersAPI.js";
 import { getLoggedInUser, setLoggedInUser } from "../DB/usersData.js";
-
 let currentLoggedInUser = getLoggedInUser(); // ✅ טעינת משתמש מחובר אם קיים
+
+function syncLoggedInUser() {
+    currentLoggedInUser = getLoggedInUser(); // 🔹 תמיד טוען מחדש את המשתמש מ-LocalStorage
+}
+
 
 // ✅ פונקציה שמטפלת בבקשות ה-API
 export function handleRequest(request) {
+    syncLoggedInUser(); // 🔹 לפני עיבוד הבקשה נוודא שהמשתמש מעודכן
     const { method, endpoint, data } = request;
     let response;
 

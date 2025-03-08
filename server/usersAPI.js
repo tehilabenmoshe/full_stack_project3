@@ -2,9 +2,9 @@
 import {loadUsers, saveUsers, getLoggedInUser, setLoggedInUser } from "../DB/usersData.js";
 
 
-
 // ✅ פונקציה לשליפת כל המשתמשים
 export function fetchUsers() {
+    const users = loadUsers(); // 🔹 טוען את המשתמשים מה-LocalStorage
     return users.length ? users : { error: "No users found" };
 }
 

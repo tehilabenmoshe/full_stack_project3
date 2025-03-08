@@ -36,7 +36,24 @@
 
 
 .book-section{
+    position: absolute;
+    top: 10px; /* Push it down so it doesn't cover the navbar */
+    left: 0;
+    width: 100vw;  
+    height: 94%;
+    justify-content: flex;
+    align-items: center;
+    margin-top: 50px;
+    background-image: url('../MEDIA/back5.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.book-section h2{
     margin-top: 100px;
+    font-size: 30px;
+    color: #28a745;
 }
 
 .search-container {
@@ -190,5 +207,67 @@
 .add-books-section .btn:hover {
     background-color: #28a745;
     transform: scale(1.05);
+}
+
+
+
+/* 📚 Centered Book List in Rows */
+#booksList {
+    display: flex;
+    flex-wrap: wrap;  /* ✅ Allows books to wrap to a new row if needed */
+    justify-content: center;  /* ✅ Centers books horizontally */
+    gap: 20px;  /* ✅ Adds spacing between books */
+    padding: 20px;  /* ✅ Adds space around the book grid */
+    max-width: 90%;  /* ✅ Prevents books from stretching too wide */
+}
+
+/* 📖 Book Card Styling */
+.book-card {
+    background: #f8f9fa;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    width: 160px;  /* ✅ Set a fixed width so books align properly */
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+    text-align: center;  /* ✅ Centers text inside each book */
+}
+
+.book-card:hover {
+    transform: scale(1.05);
+}
+
+
+/* 🎨 Book Header (Title & Delete Button) */
+.book-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.book-header h3 {
+    margin: 0;
+    color: #007bff;
+    font-size: 1.2em;
+}
+
+/* 🗑️ Delete Button */
+.delete-btn {
+    background: none;
+    border: none;
+    color: red;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    color: darkred;
+}
+
+/* 📜 Book Description */
+.book-description {
+    font-style: italic;
+    color: #555;
+    margin-top: 8px;
 }
 

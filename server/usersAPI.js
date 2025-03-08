@@ -10,11 +10,12 @@ export function fetchUsers() {
 
 // ✅ פונקציה להוספת משתמש חדש
 export function registerUser(username, password) {
+    const users = loadUsers() || []; // טוען את כל המשתמשים או מחזיר מערך ריק
     if (!username || !password) {
         return { error: "Missing required fields" };
     }
 
-    if (users.find(user => user.username === username)) {
+    if (users.find(u => u.username === username && u.password === password)) {
         return { error: "Username already exists" };
     }
 

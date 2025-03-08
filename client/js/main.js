@@ -62,40 +62,29 @@ export function attachEventListeners() {
 }
 
 
-document.addEventListener("DOMContentLoaded", function () {
-    const addBookButton = document.querySelector("#addBookForm button");
+window.addBook = function () {
+    // ✅ Get title and author from input fields
+    let title = document.getElementById("title").value;
+    let author = document.getElementById("author").value;
 
-    if (addBookButton) {
-        addBookButton.addEventListener("click", function (event) {
-            event.preventDefault(); // ✅ Prevent form submission
+    console.log("📖 Adding book:", title, author);
 
-            let title = document.getElementById("title").value;
-            let author = document.getElementById("author").value;
-
-            console.log(`📖 Trying to add book: ${title}, ${author}`);
-
-            if (!title || !author) {
-                alert("❌ חייב להזין שם ספר ומחבר!");
-                return;
-            }
-
-            addBook(title, author);
-        });
+    // ✅ Check if both fields are filled
+    if (!title || !author) {
+        alert("❌ חייב להזין שם ספר ומחבר!");
+        return;
     }
-});
 
-// 🔹 Add Book to User Collection
-window.addBook = function (title, author) {
-    console.log(`📖 Adding book: ${title}`);
     addBookToUser(title, author)
         .then(response => {
             console.log("✅ Book added:", response);
-            alert(`📖 ${title} נוסף לספרים שלך!`);
         })
         .catch(error => {
             console.error("❌ Error adding book:", error);
         });
 };
+
+
 
 
 

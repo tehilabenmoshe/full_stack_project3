@@ -10,7 +10,7 @@ function addBookToUser(title, author) {
             console.log("👤 Logged-in user:", user.username);
 
             const xhr = new FXMLHttpRequest();
-            xhr.open("POST", "/books"); // ✅ Use POST for adding a book
+            xhr.open("POST", "/books/add"); // ✅ Use POST for adding a book
             xhr.setRequestHeader("Content-Type", "application/json");
 
             xhr.onload = function () {
@@ -106,13 +106,19 @@ function updateBookList(books) {
 
     books.forEach(book => {
         const bookElement = document.createElement("div");
-        bookElement.classList.add("book-item");
+        bookElement.classList.add("book-card"); // ✅ Apply new styling class
 
         bookElement.innerHTML = `
-            <h3>${book.title}</h3>
+            <div class="book-header">
+                <h3>${book.title}</h3>
+                
+            </div>
             <p><strong>מחבר:</strong> ${book.author}</p>
             <p><strong>סטטוס:</strong> ${book.status}</p>
-            <button onclick="deleteBook(${book.id})">🗑️ מחק</button>
+            <p><strong>שנה:</strong> ${book.year || "לא ידוע"}</p>
+            <p class="book-description">${book.description || "אין תיאור"}</p>
+            <button class="delete-btn" onclick="deleteBook(${book.id})">🗑️</button>
+
         `;
 
         booksList.appendChild(bookElement);

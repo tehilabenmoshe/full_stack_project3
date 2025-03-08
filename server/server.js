@@ -33,7 +33,7 @@ export function handleRequest(request) {
             break;
 
 
-            case "/books/add": // ✅ New endpoint for adding a book
+        case "/books/add": // ✅ New endpoint for adding a book
             if (method === "POST") {
                 if (!currentLoggedInUser) {
                     response = { error: "No user logged in" };

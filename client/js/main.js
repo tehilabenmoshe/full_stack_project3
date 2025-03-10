@@ -61,7 +61,7 @@ export function attachEventListeners() {
     
 }
 
-
+/*
 window.addBook = function () {
     // ✅ Get title and author from input fields
     let title = document.getElementById("title").value;
@@ -83,8 +83,33 @@ window.addBook = function () {
             console.error("❌ Error adding book:", error);
         });
 };
+*/
 
+window.addBook = function () {
+    // ✅ קבלת כל הנתונים מהטופס
+    let title = document.getElementById("title").value;
+    let author = document.getElementById("author").value;
+    let year = document.getElementById("year").value;
+    let status = document.getElementById("status").value;
+    let description = document.getElementById("description").value;
 
+    console.log("📖 Adding book:", { title, author, year, status, description });
+
+    // ✅ בדיקה שכל השדות מולאו
+    if (!title || !author) {
+        alert("❌ חייב להזין שם ספר ומחבר!");
+        return;
+    }
+
+    // ✅ שליחת כל הנתונים לפונקציה addBookToUser
+    addBookToUser(title, author, status, year, description)
+        .then(response => {
+            console.log("✅ Book added:", response);
+        })
+        .catch(error => {
+            console.error("❌ Error adding book:", error);
+        });
+};
 
 
 

@@ -9,13 +9,15 @@ export function fetchBooks() {
     return getBooks(user.username); // ✅ שולפים רק את הספרים של המשתמש המחובר
 }
 
-// ✅ פונקציה להוספת ספר למשתמש המחובר
-export function addNewBook(title, author, status, description, year) {
+
+
+export function addNewBook(username, title, author, status, description, year) {
     const user = getLoggedInUser();
     if (!user) return { error: "No user logged in" };
-
-    return addBook(user.username, title, author, status, description, year); // ✅ מקשרים את הספר למשתמש
+    return addBook(username, title, author, status, description, year); 
 }
+
+
 
 // ✅ פונקציה לעדכון ספר קיים (למשתמש המחובר בלבד)
 export function updateExistingBook(bookId, updatedData) {

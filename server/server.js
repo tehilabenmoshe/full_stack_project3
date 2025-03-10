@@ -45,7 +45,7 @@ export function handleRequest(request) {
                         currentLoggedInUser.username, 
                         data.title, 
                         data.author, 
-                        data.status || "To Read", // ✅ Default status
+                        data.status,
                         data.description || "", 
                         data.year || "Unknown"
                     );

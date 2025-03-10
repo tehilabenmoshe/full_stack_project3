@@ -1,7 +1,7 @@
 import { FXMLHttpRequest } from "./fajax.js";
 import { getLoggedInUser } from "./users.js";
 
-
+/*
 function addBookToUser(title, author) {
     console.log(`📖 Adding book: ${title}, ${author}`);
 
@@ -28,17 +28,64 @@ function addBookToUser(title, author) {
             xhr.onerror = function () {
                 console.error("❌ Network error while adding book.");
             };
+            xhr.send(JSON.stringify({ 
+                username: user.username,
+                title: title,
+                author: author,
+                year: year,
+                description: description
+            }));
+            
+\
+        })
+        .catch(error => {
+            console.error("🚨 Failed to fetch logged-in user:", error);
+        });
+}*/
+
+function addBookToUser(title, author, status, year, description) {
+    console.log(`📖 Sending book:`, { title, author, status, year, description });
+
+    getLoggedInUser()
+        .then(user => {
+            const xhr = new FXMLHttpRequest();
+            xhr.open("POST", "/books/add");
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.onload = function () {
+                const response = JSON.parse(xhr.responseText);
+                if (response.error) {
+                    console.error("❌ Error adding book:", response.error);
+                } else {
+                    console.log("✅ Book added successfully:", response);
+                    alert(`📖 ${title} נוסף בהצלחה!`);
+                    loadBooks(); // רענון הרשימה
+                }
+            };
+
+            xhr.onerror = function () {
+                console.error("❌ Network error while adding book.");
+            };
 
             xhr.send(JSON.stringify({ 
-                username: user.username, // ✅ Send username from session
+                username: user.username,
                 title: title,
-                author: author 
+                author: author,
+                status: status,  
+                description: description,
+                year: year
             }));
         })
         .catch(error => {
             console.error("🚨 Failed to fetch logged-in user:", error);
         });
 }
+
+
+
+
+
+
 
 
 function loadBooks() {
@@ -49,7 +96,10 @@ function loadBooks() {
             console.log("👤 Logged-in user:", user.username);
 
             const xhr = new FXMLHttpRequest();
-            xhr.open("POST", "/books"); // ✅ Use POST instead of GET with query params
+            
+            xhr.open("GET", "/books");
+
+            //xhr.open("POST", "/books"); // ✅ Use POST instead of GET with query params
             xhr.setRequestHeader("Content-Type", "application/json");
 
             xhr.onload = function () {
@@ -74,8 +124,10 @@ function loadBooks() {
                 console.error("❌ Network error while loading books.");
                 document.getElementById("booksList").innerHTML = "<p>❌ שגיאת רשת.</p>";
             };
+        
+            xhr.send();
 
-            xhr.send(JSON.stringify({ username: user.username })); // ✅ Send username in body
+          // xhr.send(JSON.stringify({ username: user.username })); // ✅ Send username in body
         })
         .catch(error => {
             console.error("🚨 Failed to fetch logged-in user:", error);
@@ -114,45 +166,51 @@ function updateBookList(books) {
                 
             </div>
             <p><strong>מחבר:</strong> ${book.author}</p>
-            <p><strong>סטטוס:</strong> ${book.status}</p>
             <p><strong>שנה:</strong> ${book.year || "לא ידוע"}</p>
             <p class="book-description">${book.description || "אין תיאור"}</p>
             <button class="delete-btn" onclick="deleteBook(${book.id})">🗑️</button>
 
         `;
+        console.log("📚 נתוני הספר שמתקבלים מהשרת:", book);
 
         booksList.appendChild(bookElement);
     });
 
 }
 
-// פונקציה למחיקת ספר
+//מחיקת ספר
 function deleteBook(bookId) {
     if (!confirm("🗑️ האם אתה בטוח שברצונך למחוק את הספר הזה?")) return;
 
-    const xhr = new FXMLHttpRequest();
-    xhr.open("DELETE", "/books/delete");
+    getLoggedInUser()
+        .then(user => {
+            const xhr = new FXMLHttpRequest();
+            xhr.open("DELETE", "/books/delete");
+            xhr.setRequestHeader("Content-Type", "application/json");
 
-    xhr.onload = function () {
-        const response = JSON.parse(xhr.responseText);
-        if (response.error) {
-            alert("❌ שגיאה: " + response.error);
-        } else {
-            alert("✅ הספר נמחק בהצלחה!");
-            loadBooks(); // טוען מחדש את הרשימה
-        }
-    };
+            xhr.onload = function () {
+                const response = JSON.parse(xhr.responseText);
+                if (response.error) {
+                    alert("❌ שגיאה: " + response.error);
+                } else {
+                    alert("✅ הספר נמחק בהצלחה!");
+                    loadBooks(); // מרענן את רשימת הספרים
+                }
+            };
 
-    xhr.onerror = function () {
-        alert("❌ שגיאת רשת!");
-    };
+            xhr.onerror = function () {
+                alert("❌ שגיאת רשת!");
+            };
 
-    xhr.send(JSON.stringify({ id: bookId }));
+            xhr.send(JSON.stringify({ username: user.username, id: bookId })); // 🔹 שולחים גם את שם המשתמש
+        })
+        .catch(error => {
+            alert("❌ שגיאה בהשגת המשתמש: " + error);
+        });
 }
 
 
-
-
+window.deleteBook = deleteBook;
 
 // ייצוא הפונקציות במידה וצריך לשלב במקומות אחרים
 export { loadBooks, deleteBook, addBookToUser, updateBookList };

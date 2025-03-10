@@ -19,14 +19,14 @@ export function saveBooks(username, books) {
     }
 }
 
-// 🔹 הוספת ספר למשתמש המחובר
-export function addBook(username, title, author, status, description, year) {
+export function addBook(username, title, author, bookStatus, description, year) {
+    console.log("📚 שמירת ספרים:", { username, title, author, bookStatus, description, year });
     const books = getBooks(username);
     const newBook = {
         id: Date.now(), 
         title,
         author,
-        status,
+        status, 
         description,
         year
     };
@@ -35,6 +35,8 @@ export function addBook(username, title, author, status, description, year) {
     saveBooks(username, books);
     return { message: "Book added successfully!", book: newBook };
 }
+
+
 
 // 🔹 עדכון ספר של משתמש מחובר
 export function updateBook(username, bookId, updatedData) {

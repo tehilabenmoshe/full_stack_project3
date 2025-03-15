@@ -1,7 +1,7 @@
 import { fetchBooks, addNewBook, updateExistingBook, removeBook } from "./booksAPI.js";
 import { fetchUsers, registerUser, loginUser } from "./usersAPI.js";
 import { getLoggedInUser, setLoggedInUser } from "../DB/usersData.js";
-let currentLoggedInUser = getLoggedInUser(); // ✅ טעינת משתמש מחובר אם קיים
+let currentLoggedInUser = getLoggedInUser(); 
 
 function syncLoggedInUser() {
     currentLoggedInUser = getLoggedInUser(); // 🔹 תמיד טוען מחדש את המשתמש מ-LocalStorage
@@ -33,7 +33,7 @@ export function handleRequest(request) {
             break;
 
 
-        case "/books/add": // ✅ New endpoint for adding a book
+        case "/books/add": 
             if (method === "POST") {
                 if (!currentLoggedInUser) {
                     response = { error: "No user logged in" };
@@ -45,7 +45,7 @@ export function handleRequest(request) {
                         currentLoggedInUser.username, 
                         data.title, 
                         data.author, 
-                        data.status,
+                        data.bookStatus,
                         data.description || "", 
                         data.year || "Unknown"
                     );
@@ -53,9 +53,9 @@ export function handleRequest(request) {
             }
             break;
         
-
-
+          
         case "/books/update":
+            console.log("📩 עדכון ספר:", data);
             if (method === "PUT") {
                 response = currentLoggedInUser ? updateExistingBook(data.id, data)
                                                : { error: "No user logged in" };

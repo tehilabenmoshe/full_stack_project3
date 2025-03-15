@@ -20,7 +20,7 @@ export function registerUser(username, password) {
             reject("Network error");
         };
 
-        xhr.send(JSON.stringify({ username, password })); // 🚀 Sending Data
+        xhr.send(JSON.stringify({ username, password })); 
     });
 }
 
@@ -53,7 +53,6 @@ export function loginUser(username, password) {
         xhr.onerror = function () {
             reject("Invalid username or password");
         };
-
         xhr.send(JSON.stringify({ username, password }));
     });
 }
@@ -75,7 +74,7 @@ export function getLoggedInUser() {
             reject("Network error");
         };
 
-        xhr.send(); // ✅ `GET` does not send data in the body
+        xhr.send(); 
     });
 }
 

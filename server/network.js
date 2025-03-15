@@ -41,5 +41,5 @@ class Network {
     }
 }
 
-// ✅ ייצוא ה-Network ללא איבוד חבילות כרגע (לבדיקה)
+// ללא איבוד חבילות כרגע (לבדיקה)
 export const network = new Network(0.0);

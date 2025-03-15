@@ -1,11 +1,9 @@
 //אחראי לנהל את האירועים שקוראים בכל הדפים ולקרוא לפןנקציות המתאימות
+
 import { registerUser, loginUser } from "./users.js";
 import { navigateTo } from "./router.js";  // ✅ Ensure the correct case
 import { addBookToUser, loadBooks } from "./books.js";
 
-//import { loadBooks, displayBooks, deleteBook} from "./books.js";
-
-//import { fetchBooks, fetchAllBooks, addBookToUser } from "./fajax.js"; // ✅ Fetch books via FAJAX
 
 
 export function attachEventListeners() {
@@ -46,7 +44,7 @@ export function attachEventListeners() {
             let username = document.getElementById("register-username").value;
             let password = document.getElementById("register-password").value;
     
-            console.log("📩 Registering user:", { username, password }); // ✅ Debugging line
+            console.log("📩 Registering user:", { username, password }); 
     
             try {
                 let message = await registerUser(username, password);
@@ -61,36 +59,20 @@ export function attachEventListeners() {
     
 }
 
-/*
-window.addBook = function () {
-    // ✅ Get title and author from input fields
-    let title = document.getElementById("title").value;
-    let author = document.getElementById("author").value;
 
-    console.log("📖 Adding book:", title, author);
-
-    // ✅ Check if both fields are filled
-    if (!title || !author) {
-        alert("❌ חייב להזין שם ספר ומחבר!");
-        return;
-    }
-
-    addBookToUser(title, author)
-        .then(response => {
-            console.log("✅ Book added:", response);
-        })
-        .catch(error => {
-            console.error("❌ Error adding book:", error);
-        });
-};
-*/
 
 window.addBook = function () {
     // ✅ קבלת כל הנתונים מהטופס
     let title = document.getElementById("title").value;
     let author = document.getElementById("author").value;
     let year = document.getElementById("year").value;
+    if (year<1000 || year > 2025){
+        alert("❌ שנה חייבת להיות תקנית")
+        return;
+    }
+
     let status = document.getElementById("status").value;
+    
     let description = document.getElementById("description").value;
 
     console.log("📖 Adding book:", { title, author, year, status, description });

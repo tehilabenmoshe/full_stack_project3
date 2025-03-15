@@ -26,7 +26,7 @@ export function addBook(username, title, author, bookStatus, description, year) 
         id: Date.now(), 
         title,
         author,
-        status, 
+        bookStatus, 
         description,
         year
     };
@@ -37,7 +37,7 @@ export function addBook(username, title, author, bookStatus, description, year) 
 }
 
 
-
+/*
 // 🔹 עדכון ספר של משתמש מחובר
 export function updateBook(username, bookId, updatedData) {
     const books = getBooks(username);
@@ -48,7 +48,7 @@ export function updateBook(username, bookId, updatedData) {
     saveBooks(username, books);
     return books[index];
 }
-
+*/
 // 🔹 מחיקת ספר של משתמש מחובר
 export function deleteBook(username, bookId) {
     const books = getBooks(username);

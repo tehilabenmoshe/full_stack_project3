@@ -4,7 +4,7 @@ import {loadUsers, saveUsers, getLoggedInUser, setLoggedInUser } from "../DB/use
 
 // ✅ פונקציה לשליפת כל המשתמשים
 export function fetchUsers() {
-    const users = loadUsers(); // 🔹 טוען את המשתמשים מה-LocalStorage
+    const users = loadUsers(); // 
     return users.length ? users : { error: "No users found" };
 }
 
@@ -23,7 +23,7 @@ export function registerUser(username, password) {
     users.push(newUser);
     saveUsers(users);
 
-    setLoggedInUser(username); // ✅ שמירת המשתמש המחובר
+    setLoggedInUser(username); 
     return newUser;
 }
 
@@ -32,13 +32,13 @@ export function registerUser(username, password) {
 export function loginUser(username, password) {
     const users = loadUsers() || []; // טוען את כל המשתמשים או מחזיר מערך ריק
     if (users.length === 0) {
-        return { error: "No users found" }; // אם אין משתמשים כלל
+        return { error: "No users found" }; 
     }
 
     const user = users.find(u => u.username === username && u.password === password);
     
     if (!user) {
-        return { error: "Invalid username or password" }; // שם משתמש או סיסמה שגויים
+        return { error: "Invalid username or password" }; 
     }
 
     setLoggedInUser(username); // ✅ שומר את המשתמש המחובר

@@ -20,10 +20,10 @@ export function getLoggedInUser() {
 
 // ✅ פונקציה לעדכון המשתמש המחובר
 export function setLoggedInUser(username) {
-    const users = loadUsers(); // ✅ תמיד נטען את המשתמשים כדי לקבל נתונים מעודכנים
+    const users = loadUsers(); 
     const user = users.find(u => u.username === username);
     if (user) {
-        localStorage.setItem(LOGGED_IN_USER_KEY, JSON.stringify(user)); // שומר את כל הנתונים של המשתמש
+        localStorage.setItem(LOGGED_IN_USER_KEY, JSON.stringify(user)); 
     }
 }
 

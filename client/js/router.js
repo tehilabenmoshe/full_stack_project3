@@ -7,7 +7,7 @@ function loadPage(page) {
         document.getElementById("app").innerHTML = template.innerHTML; // Load the template into #app
         attachEventListeners(); // Reattach form event listeners after page load
     } else {
-        document.getElementById("app").innerHTML = "<h2>❌ דף לא נמצא</h2><p>נסה שוב מאוחר יותר.</p>"; // Page not found
+        document.getElementById("app").innerHTML = "<h2>❌ דף לא נמצא</h2><p>נסה שוב מאוחר יותר.</p>"; 
     }
 }
 

@@ -1,4 +1,5 @@
-import { getBooks, addBook, updateBook, deleteBook } from "../DB/booksData.js";
+//import { getBooks, addBook, updateBook, deleteBook } from "../DB/booksData.js";
+import { getBooks, addBook, deleteBook } from "../DB/booksData.js";
 import { getLoggedInUser } from "../DB/usersData.js";
 
 // ✅ פונקציה לשליפת כל הספרים של המשתמש המחובר
@@ -6,7 +7,7 @@ export function fetchBooks() {
     const user = getLoggedInUser();
     if (!user) return { error: "No user logged in" };
 
-    return getBooks(user.username); // ✅ שולפים רק את הספרים של המשתמש המחובר
+    return getBooks(user.username); 
 }
 
 
@@ -44,5 +45,31 @@ export function removeBook(bookId) {
 
     return deleteBook(user.username, bookId);
 }
+
+
+export function updateBook(username, bookId, title, author, bookStatus, description, year) {
+    console.log("🔄 מעדכן ספר:", { username, bookId, title, author, bookStatus, description, year });
+
+    const books = getBooks(username);
+    const bookIndex = books.findIndex(book => book.id === bookId);
+
+    if (bookIndex === -1) {
+        console.error("❌ ספר לא נמצא!");
+        return { error: "ספר לא נמצא" };
+    }
+
+    books[bookIndex] = {
+        ...books[bookIndex],
+        title: title,
+        author: author,
+        bookStatus: bookStatus,
+        description: description,
+        year: year
+    };
+
+    saveBooks(username, books);
+    return books[bookIndex];
+}
+
 
 

@@ -171,7 +171,7 @@ function updateBookList(books) {
     <p><strong>סטטוס:</strong> ${book.bookStatus || "לא זמין"}</p>
     <p class="book-description">${book.description || "אין תיאור"}</p>
     <button class="delete-btn" onclick="deleteBook(${book.id})">🗑️</button>
-    <button class="update-btn" onclick="updateBookDetails(${book.id})">✏️</button>
+    <button class="edit-btn" onclick="updateBookDetails(${book.id})">✏️</button>
 `;
 
         ;

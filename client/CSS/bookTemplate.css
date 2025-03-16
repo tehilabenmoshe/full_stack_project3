@@ -232,13 +232,13 @@
 /* 📖 Book Card Styling */
 .book-card {
     background: #f8f9fa;
-    border: 2px solid #ddd;
     border-radius: 10px;
     padding: 15px;
     width: 160px;  /* ✅ Set a fixed width so books align properly */
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out;
     text-align: center;  /* ✅ Centers text inside each book */
+    border: none;
     
 }
 
@@ -303,7 +303,6 @@
     width: 250px;
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease-in-out;
     display: flex;
     flex-direction: column;

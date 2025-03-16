@@ -1,48 +1,8 @@
 import { FXMLHttpRequest } from "./fajax.js";
 import { getLoggedInUser } from "./users.js";
+import { navigateTo } from "./router.js";
 
 
-
-// function addBookToUser(title, author) {
-//     console.log(📖 Adding book: ${title}, ${author});
-
-//     getLoggedInUser()
-//         .then(user => {
-//             console.log("👤 Logged-in user:", user.username);
-
-//             const xhr = new FXMLHttpRequest();
-//             xhr.open("POST", "/books/add"); // ✅ Use POST for adding a book
-//             xhr.setRequestHeader("Content-Type", "application/json");
-
-//             xhr.onload = function () {
-//                 const response = JSON.parse(xhr.responseText);
-
-//                 if (response.error) {
-//                     console.error("❌ Error adding book:", response.error);
-//                 } else {
-//                     console.log("✅ Book added successfully:", response);
-//                     alert(📖 ${title} נוסף לספרים שלך!);
-//                     loadBooks(); // ✅ Reload books after adding
-//                 }
-//             };
-
-//             xhr.onerror = function () {
-//                 console.error("❌ Network error while adding book.");
-//             };
-//             xhr.send(JSON.stringify({ 
-//                 username: user.username,
-//                 title: title,
-//                 author: author,
-//                 year: year,
-//                 description: description
-//             }));
-            
-
-//         })
-//         .catch(error => {
-//             console.error("🚨 Failed to fetch logged-in user:", error);
-//         });
-// }
 
 function addBookToUser(title, author, bookStatus, year, description) {
     // console.log(📖 Sending book, { title, author, bookStatus, year, description });
@@ -60,7 +20,10 @@ function addBookToUser(title, author, bookStatus, year, description) {
                 } else {
                     console.log("✅ Book added successfully:", response);
                     // alert(📖 ${title}, "good");
-                    alert(good);
+                    alert("📖 הספר נוסף בהצלחה!");
+
+                    // ✅ Navigate to the books page after adding
+                    navigateTo("books_template");
                     loadBooks(); // רענון הרשימה
                 }
             };

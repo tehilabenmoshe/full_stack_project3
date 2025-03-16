@@ -117,6 +117,14 @@
     color: #555;
 }
 
+.book-title {
+    font-size: 17px; /* Bigger text */
+    font-weight: bold; /* Make it bold */
+    color: #1976d2; /* Blue color */
+    text-align: center; /* Center the text */
+    margin-bottom: 5px; /* Space below */
+}
+
 
 
 /* Style for Add Books Section */
@@ -231,6 +239,7 @@
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out;
     text-align: center;  /* ✅ Centers text inside each book */
+    
 }
 
 .book-card:hover {
@@ -243,15 +252,32 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    text-align: center;
 }
 
 .book-header h3 {
     margin: 0;
-    color: #007bff;
+    color: #3b76be;
     font-size: 1.2em;
+    text-align: center;
+    
 }
 
-/* 🗑️ Delete Button */
+.edit-btn{
+    background: none;
+    border: none;
+    color: red;
+    font-size: 1.2em;
+    cursor: pointer;
+
+}
+
+.edit-btn:hover {
+    transform: scale(1.05);
+}
+
+
+/* Delete Button */
 .delete-btn {
     background: none;
     border: none;
@@ -261,7 +287,7 @@
 }
 
 .delete-btn:hover {
-    color: darkred;
+    transform: scale(1.05);
 }
 
 /* 📜 Book Description */
@@ -270,4 +296,93 @@
     color: #555;
     margin-top: 8px;
 }
+
+/* 🔹 Book Card Styles */
+.update_book_card {
+    background: white;
+    width: 250px;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    text-align:center;
+    margin: 10px;
+}
+
+/* 📚 Hover Effect */
+.update_book_card:hover {
+    transform: scale(1.05);
+}
+
+/* 📌 Style the status section */
+.update-book-field {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding:3px;
+    padding-right: 1px;
+    border-radius: 8px;
+    margin-top: 5px;
+    margin-right: 15px;
+    width: 100%;
+    text-align: right;
+}
+
+/* Remove extra margin from labels */
+.update-book-field strong {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 1px; /* Reduce space between label and input */
+    text-align: right;
+    font-weight: 600;
+    font-family: 'Ploni', sans-serif;
+
+}
+
+/* 📌 Style the select dropdown */
+.update-book-field select {
+    width: 85%;
+    padding: 6px;
+    font-size: 14px;
+    border-radius: 6px;
+    background: white;
+    transition: 0.2s;
+    text-align: right;
+    appearance: none; /* Hides the default browser styling */
+    font-family: 'Ploni', sans-serif;
+}
+
+/* 📌 Add hover & focus effects */
+.update-book-field select:hover,
+.update-book-field select:focus {
+    border-color: #1976d2;
+    outline: none;
+}
+
+
+/* Reduce spacing between input fields */
+.update-book-field input,
+.update-book-field textarea {
+    width: 80%;
+    padding: 5px; /* Reduce padding */
+    font-size: 14px;
+    border-radius: 6px;
+    margin-bottom: 1px; /* Reduce space */
+    text-align: right;
+    border: none; /* Removes the border */
+    font-family: 'Ploni', sans-serif;
+}
+
+
+/* 🖌️ Focus Effects */
+.update-book-field input:focus,
+.update-book-field textarea:focus {
+    border-color: #1976d2;
+    outline: none;
+}
+
+
+
 

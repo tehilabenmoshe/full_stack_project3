@@ -69,6 +69,43 @@ export function handleRequest(request) {
             }
             break;
 
+
+        case "/books/details":
+            if (method === "GET") {
+               const bookId = data?.id;
+                if (!bookId) {
+                    response = { error: "Missing book ID" };
+                } else {
+                    response = getBookById(bookId); // ✅ Fetch book from database
+                }               
+            }
+            break;
+
+
+        case "/books/search":
+            if (method === "POST") {
+                const searchQuery = data?.q?.toLowerCase() || ""; // Get the search query
+                if (!currentLoggedInUser) {
+                    response = { error: "No user logged in" };
+                } else {
+                    console.log(`🔍 Searching books for ${currentLoggedInUser.username}:`, searchQuery);
+                        
+                    const allBooks = fetchBooks(currentLoggedInUser.username); // Get user's books
+            
+                    // Filter books based on title or author
+                    response = allBooks.filter(book =>
+                        book.title.toLowerCase().includes(searchQuery) ||
+                        book.author.toLowerCase().includes(searchQuery)
+                    );
+            
+                    console.log("✅ Search results:", response);
+                }
+            }
+            break;
+            
+              
+            
+
         case "/users":
             if (method === "GET") {
                 response = fetchUsers();

@@ -74,3 +74,10 @@ export function updateBook(username, bookId, updatedData) {
     return books[bookIndex];
 }
 
+
+export function getBookById(bookId) {
+    const book = books.find(b => b.id == bookId); // ✅ Find book in database
+    return book ? book : { error: "Book not found" };
+}
+
+

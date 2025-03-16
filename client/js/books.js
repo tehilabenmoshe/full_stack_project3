@@ -86,10 +86,6 @@ function addBookToUser(title, author, bookStatus, year, description) {
 
 
 
-
-
-
-
 function loadBooks() {
     console.log("📚 Fetching books...");
 
@@ -142,7 +138,7 @@ function loadBooks() {
 function updateBookList(books) {
     if (!Array.isArray(books)) {
         console.error("❌ Invalid books data:", books);
-        books = []; // Ensure books is always an array
+        books = [];
     }
 
     const booksList = document.getElementById("booksList");
@@ -160,27 +156,28 @@ function updateBookList(books) {
 
     books.forEach(book => {
         const bookElement = document.createElement("div");
-        bookElement.classList.add("book-card"); // ✅ Apply new styling class
+        bookElement.classList.add("book-card");
+        bookElement.id = `book-${book.id}`; // ✅ Assign ID correctly
 
         bookElement.innerHTML = `
-    <div class="book-header">
-        <h3>${book.title}</h3>
-    </div>
-    <p><strong>מחבר:</strong> ${book.author}</p>
-    <p><strong>שנה:</strong> ${book.year || "לא ידוע"}</p>
-    <p><strong>סטטוס:</strong> ${book.bookStatus || "לא זמין"}</p>
-    <p class="book-description">${book.description || "אין תיאור"}</p>
-    <button class="delete-btn" onclick="deleteBook(${book.id})">🗑️</button>
-    <button class="edit-btn" onclick="updateBookDetails(${book.id})">✏️</button>
-`;
+          
+            <div class="book-header">
+                <h3 class="book-title">${book.title}</h3> <!-- ✅ Now has class="book-title" -->  
+            </div>
+            <p class="book-author">שם הסופר: ${book.author}</p> <!-- ✅ Now has class="book-author" -->
+            <p class="book-year">שנת הוצאה: ${book.year || "לא ידוע"}</p> <!-- ✅ Now has class="book-year" -->
+            <p class="book-status">סטטוס: ${book.bookStatus || "לא זמין"}</p> <!-- ✅ Now has class="book-status" -->
+            <p class="book-description">תיאור: ${book.description || "אין תיאור"}</p> <!-- ✅ Now has class="book-description" -->
+            <button class="delete-btn" onclick="deleteBook(${book.id})">🗑️</button>
+            <button class="edit-btn" onclick="updateBookDetails(${book.id})">✏️</button>
+          
+        `;
 
-        ;
-        console.log("📚 נתוני הספר שמתקבלים מהשרת:", book);
-
+        console.log("📚 Book element created with ID:", bookElement.id);
         booksList.appendChild(bookElement);
     });
-
 }
+
 
 //מחיקת ספר
 function deleteBook(bookId) {
@@ -215,100 +212,205 @@ function deleteBook(bookId) {
 
 
 function updateBookDetails(bookId) {
-    const newTitle = prompt("📖 הכנס שם ספר חדש:");
-    if (!newTitle) return;
-
-    const newAuthor = prompt("✍️ הכנס שם מחבר חדש:");
-    if (!newAuthor) return;
-
-    const newYear = prompt("📆 הכנס שנת פרסום:");
-    const newStatus = prompt("📌 הכנס סטטוס (To Read, Reading, Read):");
-    const newDescription = prompt("📝 הכנס תיאור חדש:");
-
-    console.log(`✏️ Updating book ${bookId}:`, { newTitle, newAuthor, newYear, newStatus, newDescription });
+    console.log(`✏️ Updating book ${bookId}`);
 
     getLoggedInUser()
         .then(user => {
-            const xhr = new FXMLHttpRequest();
-            xhr.open("PUT", "/books/update");
-            xhr.setRequestHeader("Content-Type", "application/json");
+            // Find the book card in the DOM
+            const bookElement = document.getElementById(`book-${bookId}`);
+            if (!bookElement) {
+                console.error("❌ Book element not found!");
+                return;
+            }
 
-            xhr.onload = function () {
-                const response = JSON.parse(xhr.responseText);
-                if (response.error) {
-                    console.error("❌ Error updating book:", response.error);
-                } else {
-                    console.log("✅ Book updated successfully:", response);
-                    alert(`📖 ${newTitle} עודכן בהצלחה!`);
-                    loadBooks(); // מרענן את הרשימה
-                }
+            // Extract text values without labels
+            const titleElement = bookElement.querySelector(".book-title");
+            const authorElement = bookElement.querySelector(".book-author");
+            const yearElement = bookElement.querySelector(".book-year");
+            const statusElement = bookElement.querySelector(".book-status");
+            const descriptionElement = bookElement.querySelector(".book-description");
+
+            // Extract values only (remove labels)
+            const titleValue = titleElement.innerText.trim();
+            const authorValue = authorElement.innerText.replace("שם הסופר: ", "").trim();
+            const yearValue = yearElement.innerText.replace("שנת הוצאה: ", "").trim();
+            const statusValue = statusElement.innerText.replace("סטטוס: ", "").trim();
+            const descriptionValue = descriptionElement.innerText.replace("תיאור: ", "").trim();
+
+            // Keep labels and replace only values with input fields
+            titleElement.innerHTML = `
+                <div class="update-book-field">
+                    <strong>שם הספר</strong>
+                    <input type="text" value="${titleValue}" class="edit-title">
+                </div>
+            `;
+
+            authorElement.innerHTML = `
+                <div class="update-book-field">
+                    <strong>שם הסופר</strong>
+                    <input type="text" value="${authorValue}" class="edit-author">
+                </div>
+            `;
+
+            yearElement.innerHTML = `
+                <div class="update-book-field">
+                    <strong>שנת הוצאה</strong>
+                    <input type="number" value="${yearValue}" class="edit-year">
+                </div>
+            `;
+
+            statusElement.innerHTML = `
+                <div class="update-book-field">
+                    <strong>סטטוס</strong>
+                    <select class="edit-status">
+                        <option value="To Read" ${statusValue.includes("To Read") ? "selected" : ""}>To Read</option>
+                        <option value="Reading" ${statusValue.includes("Reading") ? "selected" : ""}>Reading</option>
+                        <option value="Read" ${statusValue.includes("Read") ? "selected" : ""}>Read</option>
+                    </select>
+                </div>
+            `;
+
+            descriptionElement.innerHTML = `
+               <div class="update-book-field">
+                   <strong>תיאור</strong>
+                   <textarea class="edit-description">${descriptionValue}</textarea>
+               </div>
+            `;
+
+            // Change button to "Save"
+            const editButton = bookElement.querySelector(".edit-btn");
+            editButton.innerHTML = "💾";
+            editButton.onclick = function () {
+                saveUpdatedBook(bookId, user.username); // ✅ Call `saveUpdatedBook`
             };
-
-            xhr.onerror = function () {
-                console.error("❌ Network error while updating book.");
-            };
-
-            xhr.send(JSON.stringify({
-                username: user.username,
-                id: bookId,
-                title: newTitle,
-                author: newAuthor,
-                bookStatus: newStatus,
-                description: newDescription,
-                year: newYear
-            }));
         })
         .catch(error => {
             console.error("🚨 Failed to fetch logged-in user:", error);
         });
 }
 
-// // הוספת אפשרות לעריכת ספר בתצוגה
-// function updateBookList(books) {
-//     if (!Array.isArray(books)) {
-//         console.error("❌ Invalid books data:", books);
-//         books = [];
-//     }
 
-//     const booksList = document.getElementById("booksList");
-//     if (!booksList) {
-//         console.error("❌ Error: booksList element not found!");
-//         return;
-//     }
+function saveUpdatedBook(bookId, username) {
+    console.log(`💾 Sending updated book ${bookId} to the server`);
 
-//     booksList.innerHTML = ""; 
+    const bookElement = document.getElementById(`book-${bookId}`);
+    if (!bookElement) {
+        console.error("❌ Book element not found in the DOM!");
+        return;
+    }
 
-//     if (books.length === 0) {
-//         booksList.innerHTML = "<p>📭 אין לך ספרים כרגע. הוסף אחד!</p>";
-//         return;
-//     }
+    // ✅ Extract updated values
+    const newTitle = bookElement.querySelector(".edit-title").value;
+    const newAuthor = bookElement.querySelector(".edit-author").value;
+    const newYear = bookElement.querySelector(".edit-year").value;
+    const newStatus = bookElement.querySelector(".edit-status").value;
+    const newDescription = bookElement.querySelector(".edit-description").value;
 
-//     books.forEach(book => {
-//         const bookElement = document.createElement("div");
-//         bookElement.classList.add("book-card");
+    const xhr = new FXMLHttpRequest();
+    xhr.open("PUT", "/books/update"); // ✅ Send the update request
+    xhr.setRequestHeader("Content-Type", "application/json");
 
-//         bookElement.innerHTML = `
-//             <div class="book-header">
-//                 <h3>${book.title}</h3>
-//             </div>
-//             <p><strong>מחבר:</strong> ${book.author}</p>
-//             <p><strong>שנה:</strong> ${book.year || "לא ידוע"}</p>
-//             <p><strong>סטטוס:</strong> ${book.bookStatus}</p>
-//             <p class="book-description">${book.description || "אין תיאור"}</p>
-//             <button class="edit-btn" onclick="updateBookDetails(${book.id})">✏️ ערוך</button>
-//             <button class="delete-btn" onclick="deleteBook(${book.id})">🗑️ מחק</button>
-//         `;
-//         console.log("📚 נתוני הספר שמתקבלים מהשרת:", book);
+    xhr.onload = function () {
+        const response = JSON.parse(xhr.responseText);
+        if (response.error) {
+            console.error("❌ Error updating book:", response.error);
+        } else {
+            console.log("✅ Book successfully updated:", response);
 
-//         booksList.appendChild(bookElement);
-//     });
-// }
+            // ✅ Refresh UI using the response from the server
+            updateBookUI(bookId, response);
+        }
+    };
+
+    xhr.onerror = function () {
+        console.error("❌ Network error while updating book.");
+    };
+
+    xhr.send(JSON.stringify({
+        username: username,
+        id: bookId, // ✅ Ensure correct ID is sent
+        title: newTitle,
+        author: newAuthor,
+        bookStatus: newStatus,
+        description: newDescription,
+        year: newYear
+    }));
+}
+
+function updateBookUI(bookId, book) {
+    console.log(`🔄 Updating UI for book ID: ${bookId}`, book);
+
+    const bookElement = document.getElementById(`book-${bookId}`);
+    if (!bookElement) {
+        console.error("❌ Book element not found in the DOM!");
+        return;
+    }
+
+    // ✅ Use the correct properties from the `book` object
+    bookElement.querySelector(".book-title").innerText = book.title;
+    bookElement.querySelector(".book-author").innerHTML = `<strong>שם הסופר: </strong>${book.author}`;
+    bookElement.querySelector(".book-year").innerHTML = `<strong>שנת הוצאה: </strong>${book.year}`;
+    bookElement.querySelector(".book-status").innerHTML = `<strong>סטטוס: </strong>${book.bookStatus}`;
+    bookElement.querySelector(".book-description").innerHTML = `<strong>תיאור: </strong>${book.description}`;
+
+    // Change the button back to "Edit"
+    const editButton = bookElement.querySelector(".edit-btn");
+    editButton.innerHTML = "✏️";
+    editButton.onclick = function () {
+        updateBookDetails(bookId);
+    };
+}
+
+function filterBooks() {
+    const searchQuery = document.getElementById("searchInput").value.trim();
+
+    getLoggedInUser().then(user => {
+        if (!user) {
+            console.error("🚨 No user logged in.");
+            return;
+        }
+
+        const xhr = new FXMLHttpRequest();
+        xhr.open("POST", "/books/search"); // ✅ Use POST instead of GET
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onload = function () {
+            try {
+                console.log("📩 Response received:", xhr.responseText);
+                const response = JSON.parse(xhr.responseText);
+                if (!response || response.error) {
+                    console.warn("⚠️ No matching books found.");
+                    updateBookList([]);
+                    return;
+                }
+
+                console.log("✅ Search results:", response);
+                updateBookList(response);
+            } catch (e) {
+                console.error("❌ JSON Parsing Error:", e);
+                updateBookList([]);
+            }
+        };
+
+        xhr.onerror = function () {
+            console.error("❌ Network error while searching books.");
+        };
+
+        // Send search term in the request body
+        xhr.send(JSON.stringify({ q: searchQuery }));
+    }).catch(error => {
+        console.error("🚨 Failed to fetch logged-in user:", error);
+    });
+}
+
+
+
+
 
 // הוספת הפונקציה ל- `window` כדי שניתן יהיה להשתמש בה בלחיצה על כפתור
 window.updateBookDetails = updateBookDetails;
-
-
 window.deleteBook = deleteBook;
+window.filterBooks = filterBooks;
 
 // ייצוא הפונקציות במידה וצריך לשלב במקומות אחרים
-export { loadBooks, deleteBook, addBookToUser, updateBookList };
+export { loadBooks, deleteBook, addBookToUser, updateBookList, filterBooks };

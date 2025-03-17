@@ -5,7 +5,7 @@ import { navigateTo } from "./router.js";
 
 
 function addBookToUser(title, author, bookStatus, year, description) {
-    // console.log(📖 Sending book, { title, author, bookStatus, year, description });
+   
 
     getLoggedInUser()
         .then(user => {

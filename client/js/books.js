@@ -57,7 +57,6 @@ function loadBooks() {
 
             xhr.open("GET", "/books");
 
-            //xhr.open("POST", "/books"); // ✅ Use POST instead of GET with query params
             xhr.setRequestHeader("Content-Type", "application/json");
 
             xhr.onload = function () {

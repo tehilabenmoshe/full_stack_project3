@@ -1,5 +1,5 @@
 import { fetchBooks, addNewBook, updateExistingBook, removeBook, searchBooks } from "./booksAPI.js";
-import { getLoggedInUser, setLoggedInUser } from "../DB/usersData.js";
+import { getLoggedInUser } from "../DB/usersData.js";
 
 let currentLoggedInUser = getLoggedInUser(); 
 

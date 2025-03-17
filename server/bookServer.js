@@ -19,63 +19,74 @@ export function handleBookRequest(request) {
     switch (endpoint) {
         case "/books":
             if (method === "GET") {
-                if (!currentLoggedInUser) {
-                    response = { error: "No user logged in", status: 401 };
+                response = currentLoggedInUser ? fetchBooks(currentLoggedInUser.username) : { error: "No user logged in" };
+            } 
+            else if (method === "POST") {
+                if (!data || !data.username) {
+                    response = { error: "Missing username in request" };
                 } else {
-                    response = { data: fetchBooks(currentLoggedInUser.username), status: 200 };
+                    console.log("📚 Fetching books for:", data.username);
+                    response = fetchBooks(data.username); // ✅ Fetch books for requested user
                 }
             }
             break;
 
-        case "/books/add":
+
+        case "/books/add": 
             if (method === "POST") {
                 if (!currentLoggedInUser) {
-                    response = { error: "No user logged in", status: 401 };
+                    response = { error: "No user logged in" };
                 } else if (!data || !data.title || !data.author) {
-                    response = { error: "Missing book details", status: 400 };
+                    response = { error: "Missing book details" };
                 } else {
-                    response = { data: addNewBook(
+                    response = addNewBook(
                         currentLoggedInUser.username, 
                         data.title, 
                         data.author, 
                         data.bookStatus,
                         data.description || "", 
                         data.year || "Unknown"
-                    ), status: 201 }; // 🔹 201 = Created
+                    );
                 }
             }
             break;
-
+        
+          
         case "/books/update":
+            console.log("📩 עדכון ספר:", data);
             if (method === "PUT") {
-                if (!currentLoggedInUser) {
-                    response = { error: "No user logged in", status: 401 };
-                } else {
-                    const updatedBook = updateExistingBook(data.id, data);
-                    response = updatedBook.error ? { error: updatedBook.error, status: 400 } : { data: updatedBook, status: 200 };
-                }
+                response = currentLoggedInUser ? updateExistingBook(data.id, data)
+                                               : { error: "No user logged in" };
             }
             break;
 
         case "/books/delete":
             if (method === "DELETE") {
-                if (!currentLoggedInUser) {
-                    response = { error: "No user logged in", status: 401 };
-                } else {
-                    const deletedBook = removeBook(data.id);
-                    response = deletedBook.error ? { error: deletedBook.error, status: 400 } : { data: deletedBook, status: 200 };
-                }
+                response = currentLoggedInUser ? removeBook(data.id)
+                                               : { error: "No user logged in" };
             }
             break;
 
+
+        case "/books/details":
+            if (method === "GET") {
+               const bookId = data?.id;
+                if (!bookId) {
+                    response = { error: "Missing book ID" };
+                } else {
+                    response = getBookById(bookId); // ✅ Fetch book from database
+                }               
+            }
+            break;
+
+
         case "/books/search":
             if (method === "POST") {
+                const searchQuery = data?.q || ""; // קבלת השאילתא
                 if (!currentLoggedInUser) {
-                    response = { error: "No user logged in", status: 401 };
+                    response = { error: "No user logged in" };
                 } else {
-                    const searchQuery = data?.q || "";
-                    console.log(`🔍 Searching books for ${currentLoggedInUser.username}: ${searchQuery}`);
-                    response = { data: searchBooks(searchQuery), status: 200 };
+                    response = searchBooks(searchQuery); // ✅ שימוש בפונקציה מה-API
                 }
             }
             break;

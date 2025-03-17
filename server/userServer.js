@@ -20,30 +20,24 @@ export function handleUserRequest(request) {
         
         case "/users":
             if (method === "GET") {
-                response = { data: fetchUsers(), status: 200 };
-            } else if (method === "POST") {
-                const userResponse = registerUser(data.username, data.password);
-                response = userResponse.error ? { error: userResponse.error, status: 409 } : { data: userResponse, status: 201 };
+                response = fetchUsers();
+            } 
+            else if (method === "POST") {
+                response = registerUser(data.username, data.password);
             }
             break;
 
         case "/users/login":
-            if (method === "POST") {
-                response = loginUser(data.username, data.password);
-                if (response.error) {
-                    response = { error: response.error, status: 401 };
-                } else {
-                    setLoggedInUser(data.username);
-                    currentLoggedInUser = response;
-                    response = { data: response, status: 200 };
-                }
+            response = loginUser(data.username, data.password);
+            if (!response.error) {
+                setLoggedInUser(data.username); // ✅ שמירת המשתמש ב-LocalStorage
+                currentLoggedInUser = response; // ✅ שמירת המשתמש המחובר
             }
             break;
 
         case "/users/session":
-            const user = getLoggedInUser();
-            response = user ? { data: user, status: 200 } : { error: "No user session", status: 401 };
-            break;
+            response = getLoggedInUser() || { error: "No user session" }; // ✅ בדיקה דרך LocalStorage
+            break
 
         default:
             response = { error: "Unknown endpoint", status: 404 };

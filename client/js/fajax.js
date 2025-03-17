@@ -1,58 +1,54 @@
-import { network } from "../../server/network.js"; // מחלקת הרשת המדומה
+import { network } from "../../server/network.js";
 
 class FXMLHttpRequest {
     constructor() {
-        this.method = null;  // שיטת הבקשה (GET, POST וכו')
-        this.url = null;      // הכתובת אליה תישלח הבקשה
-        this.data = null;     // הנתונים שיישלחו (אם רלוונטי)
-        this.response = null; // התגובה מהשרת
-        this.status = 0;      // קוד סטטוס HTTP (200, 404 וכו')
-        this.onload = null;   // פונקציה שתופעל במקרה של הצלחה
-        this.onerror = null;  // פונקציה שתופעל במקרה של שגיאה
-        this.headers = {}; // לכותרות
+        this.method = null;
+        this.url = null;
+        this.data = null;
+        this.response = null;
+        this.status = 0; // 🔹 נוסיף שדה סטטוס
+        this.onload = null;
+        this.onerror = null;
+        this.headers = {};
     }
 
-    // פתיחת חיבור (שמירת שיטת הבקשה והכתובת)
     open(method, url) {
         this.method = method;
         this.url = url;
     }
 
-      // ✅ פונקציה להוספת כותרות לבקשה
-      setRequestHeader(header, value) {
+    setRequestHeader(header, value) {
         this.headers[header] = value;
     }
 
-    // שליחת הבקשה דרך Network FAJAX
     send(data = null) {
         this.data = data;
 
-        // יצירת אובייקט בקשה
         const request = {
             method: this.method,
             endpoint: this.url,
             data: this.data,
-            headers: this.headers // ✅ נוסיף גם את הכותרות שנקבעו
+            headers: this.headers
         };
 
         console.log(`📡 FAJAX sending request:`, request);
 
-        // שליחת הבקשה דרך מחלקת Network
         network.send(request, (response) => {
+            this.status = response.status || 500; // 🔹 שומר את הסטטוס שהשרת החזיר
+
             if (response.error) {
-                this.status = 500; // שגיאת שרת
+                console.warn(`⚠️ Request failed with status ${this.status}: ${response.error}`);
                 if (this.onerror) this.onerror(response.error);
             } else {
-                this.status = 200; // הצלחה
-                this.response = response;
+                this.response = response.data || response; // 🔹 שמירה של התגובה עצמה
                 if (this.onload) this.onload();
             }
         });
     }
+
     get responseText() {
-        return typeof this.response === "string" ? this.response : JSON.stringify(this.response); //המרה לגייסון אם זה לא
+        return typeof this.response === "string" ? this.response : JSON.stringify(this.response);
     }
-    
 }
 
 export { FXMLHttpRequest };

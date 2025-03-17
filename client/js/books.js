@@ -5,7 +5,6 @@ import { navigateTo } from "./router.js";
 
 
 function addBookToUser(title, author, bookStatus, year, description) {
-   
 
     getLoggedInUser()
         .then(user => {
@@ -45,8 +44,6 @@ function addBookToUser(title, author, bookStatus, year, description) {
             console.error("🚨 Failed to fetch logged-in user:", error);
         });
 }
-
-
 
 
 function loadBooks() {
@@ -223,13 +220,13 @@ function updateBookDetails(bookId) {
             `;
 
             statusElement.innerHTML = `
-                <div class="update-book-field">
-                    <strong>סטטוס</strong>
+                <div class="update-book-field">  
                     <select class="edit-status">
                         <option value="To Read" ${statusValue.includes("To Read") ? "selected" : ""}>To Read</option>
                         <option value="Reading" ${statusValue.includes("Reading") ? "selected" : ""}>Reading</option>
                         <option value="Read" ${statusValue.includes("Read") ? "selected" : ""}>Read</option>
                     </select>
+                    <strong>סטטוס</strong>
                 </div>
             `;
 
@@ -313,7 +310,7 @@ function updateBookUI(bookId, book) {
     bookElement.querySelector(".book-title").innerText = book.title;
     bookElement.querySelector(".book-author").innerHTML = `<strong>שם הסופר: </strong>${book.author}`;
     bookElement.querySelector(".book-year").innerHTML = `<strong>שנת הוצאה: </strong>${book.year}`;
-    bookElement.querySelector(".book-status").innerHTML = `<strong>סטטוס: </strong>${book.bookStatus}`;
+    bookElement.querySelector(".book-status").innerHTML = `${book.bookStatus}<strong>סטטוס: </strong>`;
     bookElement.querySelector(".book-description").innerHTML = `<strong>תיאור: </strong>${book.description}`;
 
     // Change the button back to "Edit"

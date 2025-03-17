@@ -94,7 +94,6 @@ window.addBook = function () {
 };
 
 
-
 // 🔹 Load Books When Page Loads
 document.addEventListener("DOMContentLoaded", () => {
     if (document.getElementById("booksList")) {

@@ -1,18 +1,18 @@
-import { fetchBooks, addNewBook, updateExistingBook, removeBook } from "./booksAPI.js";
+import { fetchBooks, addNewBook, updateExistingBook, removeBook, searchBooks } from "./booksAPI.js";
 import { fetchUsers, registerUser, loginUser } from "./usersAPI.js";
 import { getLoggedInUser, setLoggedInUser } from "../DB/usersData.js";
+
 let currentLoggedInUser = getLoggedInUser(); 
 
 function syncLoggedInUser() {
-    currentLoggedInUser = getLoggedInUser(); // 🔹 תמיד טוען מחדש את המשתמש מ-LocalStorage
+    currentLoggedInUser = getLoggedInUser(); // 🔹 טוען מחדש את המשתמש מ-LocalStorage
 }
-
 
 // ✅ פונקציה שמטפלת בבקשות ה-API
 export function handleRequest(request) {
-    syncLoggedInUser(); // 🔹 לפני עיבוד הבקשה נוודא שהמשתמש מעודכן
+    syncLoggedInUser(); 
     const { method, endpoint, data } = request;
-    let response;
+    let response = { status: 200 }; // 🔹 ברירת מחדל: OK
 
     console.log(`📥 Server received request: ${method} ${endpoint}`);
     console.log(`🔍 Received data:`, data);
@@ -20,115 +20,96 @@ export function handleRequest(request) {
     switch (endpoint) {
         case "/books":
             if (method === "GET") {
-                response = currentLoggedInUser ? fetchBooks(currentLoggedInUser.username) : { error: "No user logged in" };
-            } 
-            else if (method === "POST") {
-                if (!data || !data.username) {
-                    response = { error: "Missing username in request" };
+                if (!currentLoggedInUser) {
+                    response = { error: "No user logged in", status: 401 };
                 } else {
-                    console.log("📚 Fetching books for:", data.username);
-                    response = fetchBooks(data.username); // ✅ Fetch books for requested user
+                    response = { data: fetchBooks(currentLoggedInUser.username), status: 200 };
                 }
             }
             break;
 
-
-        case "/books/add": 
+        case "/books/add":
             if (method === "POST") {
                 if (!currentLoggedInUser) {
-                    response = { error: "No user logged in" };
+                    response = { error: "No user logged in", status: 401 };
                 } else if (!data || !data.title || !data.author) {
-                    response = { error: "Missing book details" };
+                    response = { error: "Missing book details", status: 400 };
                 } else {
-                    console.log(`📖 Adding book for ${currentLoggedInUser.username}:`, data.title);
-                    response = addNewBook(
+                    response = { data: addNewBook(
                         currentLoggedInUser.username, 
                         data.title, 
                         data.author, 
                         data.bookStatus,
                         data.description || "", 
                         data.year || "Unknown"
-                    );
+                    ), status: 201 }; // 🔹 201 = Created
                 }
             }
             break;
-        
-          
+
         case "/books/update":
-            console.log("📩 עדכון ספר:", data);
             if (method === "PUT") {
-                response = currentLoggedInUser ? updateExistingBook(data.id, data)
-                                               : { error: "No user logged in" };
+                if (!currentLoggedInUser) {
+                    response = { error: "No user logged in", status: 401 };
+                } else {
+                    const updatedBook = updateExistingBook(data.id, data);
+                    response = updatedBook.error ? { error: updatedBook.error, status: 400 } : { data: updatedBook, status: 200 };
+                }
             }
             break;
 
         case "/books/delete":
             if (method === "DELETE") {
-                response = currentLoggedInUser ? removeBook(data.id)
-                                               : { error: "No user logged in" };
-            }
-            break;
-
-
-        case "/books/details":
-            if (method === "GET") {
-               const bookId = data?.id;
-                if (!bookId) {
-                    response = { error: "Missing book ID" };
-                } else {
-                    response = getBookById(bookId); // ✅ Fetch book from database
-                }               
-            }
-            break;
-
-
-        case "/books/search":
-            if (method === "POST") {
-                const searchQuery = data?.q?.toLowerCase() || ""; // Get the search query
                 if (!currentLoggedInUser) {
-                    response = { error: "No user logged in" };
+                    response = { error: "No user logged in", status: 401 };
                 } else {
-                    console.log(`🔍 Searching books for ${currentLoggedInUser.username}:`, searchQuery);
-                        
-                    const allBooks = fetchBooks(currentLoggedInUser.username); // Get user's books
-            
-                    // Filter books based on title or author
-                    response = allBooks.filter(book =>
-                        book.title.toLowerCase().includes(searchQuery) ||
-                        book.author.toLowerCase().includes(searchQuery)
-                    );
-            
-                    console.log("✅ Search results:", response);
+                    const deletedBook = removeBook(data.id);
+                    response = deletedBook.error ? { error: deletedBook.error, status: 400 } : { data: deletedBook, status: 200 };
                 }
             }
             break;
-            
-              
-            
+
+        case "/books/search":
+            if (method === "POST") {
+                if (!currentLoggedInUser) {
+                    response = { error: "No user logged in", status: 401 };
+                } else {
+                    const searchQuery = data?.q || "";
+                    console.log(`🔍 Searching books for ${currentLoggedInUser.username}: ${searchQuery}`);
+                    response = { data: searchBooks(searchQuery), status: 200 };
+                }
+            }
+            break;
 
         case "/users":
             if (method === "GET") {
-                response = fetchUsers();
-            } 
-            else if (method === "POST") {
-                response = registerUser(data.username, data.password);
+                response = { data: fetchUsers(), status: 200 };
+            } else if (method === "POST") {
+                const userResponse = registerUser(data.username, data.password);
+                response = userResponse.error ? { error: userResponse.error, status: 409 } : { data: userResponse, status: 201 };
             }
             break;
 
         case "/users/login":
-            response = loginUser(data.username, data.password);
-            if (!response.error) {
-                setLoggedInUser(data.username); // ✅ שמירת המשתמש ב-LocalStorage
-                currentLoggedInUser = response; // ✅ שמירת המשתמש המחובר
+            if (method === "POST") {
+                response = loginUser(data.username, data.password);
+                if (response.error) {
+                    response = { error: response.error, status: 401 };
+                } else {
+                    setLoggedInUser(data.username);
+                    currentLoggedInUser = response;
+                    response = { data: response, status: 200 };
+                }
             }
             break;
 
         case "/users/session":
-            response = getLoggedInUser() || { error: "No user session" }; // ✅ בדיקה דרך LocalStorage
+            const user = getLoggedInUser();
+            response = user ? { data: user, status: 200 } : { error: "No user session", status: 401 };
             break;
 
         default:
-            response = { error: "Unknown endpoint" };
+            response = { error: "Unknown endpoint", status: 404 };
     }
 
     console.log(`📤 Server response for ${endpoint}:`, response);

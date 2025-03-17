@@ -12,17 +12,29 @@ export function registerUser(username, password) {
         xhr.onload = function () {
             console.log("📩 Response received:", xhr.responseText);
             let response = JSON.parse(xhr.responseText);
-            response.error ? reject(response.error) : resolve(response);
+
+            if (response.error) {
+                if (response.error.includes("already taken")) {
+                    console.warn("⚠️ Username already exists.");
+                    reject("⚠️ This username is already registered. Try logging in.");
+                } else {
+                    reject(response.error); // שגיאה אחרת
+                }
+            } else {
+                console.log("✅ Registration successful!");
+                resolve(response);
+            }
         };
 
         xhr.onerror = function () {
             console.error("❌ Network error while registering user.");
-            reject("Network error");
+            reject("❌ A network error occurred. Please try again.");
         };
 
-        xhr.send(JSON.stringify({ username, password })); 
+        xhr.send(JSON.stringify({ username, password }));
     });
 }
+
 
 
 // פונקציה להתחברות משתמש

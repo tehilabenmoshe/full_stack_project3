@@ -48,10 +48,26 @@ export function removeBook(bookId) {
 
 
 
-
 export function getBookById(bookId) {
     const book = books.find(b => b.id == bookId); // ✅ Find book in database
     return book ? book : { error: "Book not found" };
 }
+
+export function searchBooks(query) {
+    const user = getLoggedInUser();
+    if (!user) return { error: "No user logged in" };
+
+    const allBooks = getBooks(user.username); // שליפת כל הספרים של המשתמש
+
+    // 🔍 סינון הספרים לפי שם הספר או שם המחבר
+    const filteredBooks = allBooks.filter(book =>
+        book.title.toLowerCase().includes(query.toLowerCase()) ||
+        book.author.toLowerCase().includes(query.toLowerCase())
+    );
+
+    console.log(`✅ Search results for "${query}":`, filteredBooks);
+    return filteredBooks;
+}
+
 
 

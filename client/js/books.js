@@ -126,7 +126,7 @@ function updateBookList(books) {
             </div>
             <p class="book-author">שם הסופר: ${book.author}</p> <!-- ✅ Now has class="book-author" -->
             <p class="book-year">שנת הוצאה: ${book.year || "לא ידוע"}</p> <!-- ✅ Now has class="book-year" -->
-            <p class="book-status">סטטוס: ${book.bookStatus || "לא זמין"}</p> <!-- ✅ Now has class="book-status" -->
+            <p class="book-status"> ${book.bookStatus || "לא זמין"} :סטטוס</p> <!-- ✅ Now has class="book-status" -->
             <p class="book-description">תיאור: ${book.description || "אין תיאור"}</p> <!-- ✅ Now has class="book-description" -->
             <button class="delete-btn" onclick="deleteBook(${book.id})">🗑️</button>
             <button class="edit-btn" onclick="updateBookDetails(${book.id})">✏️</button>
@@ -310,7 +310,7 @@ function updateBookUI(bookId, book) {
     bookElement.querySelector(".book-title").innerText = book.title;
     bookElement.querySelector(".book-author").innerHTML = `<strong>שם הסופר: </strong>${book.author}`;
     bookElement.querySelector(".book-year").innerHTML = `<strong>שנת הוצאה: </strong>${book.year}`;
-    bookElement.querySelector(".book-status").innerHTML = `${book.bookStatus}<strong>סטטוס: </strong>`;
+    bookElement.querySelector(".book-status").innerHTML = `${book.bookStatus}<strong> :סטטוס</strong>`;
     bookElement.querySelector(".book-description").innerHTML = `<strong>תיאור: </strong>${book.description}`;
 
     // Change the button back to "Edit"

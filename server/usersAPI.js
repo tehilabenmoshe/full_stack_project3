@@ -1,5 +1,5 @@
 
-import {loadUsers, saveUsers, getLoggedInUser, setLoggedInUser } from "../DB/usersData.js";
+import {loadUsers, saveUsers, setLoggedInUser } from "../DB/usersData.js";
 
 
 // ✅ פונקציה לשליפת כל המשתמשים

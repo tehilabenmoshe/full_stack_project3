@@ -1,5 +1,4 @@
 import { fetchBooks, addNewBook, updateExistingBook, removeBook, searchBooks } from "./booksAPI.js";
-import { fetchUsers, registerUser, loginUser } from "./usersAPI.js";
 import { getLoggedInUser, setLoggedInUser } from "../DB/usersData.js";
 
 let currentLoggedInUser = getLoggedInUser(); 
@@ -9,7 +8,7 @@ function syncLoggedInUser() {
 }
 
 // ✅ פונקציה שמטפלת בבקשות ה-API
-export function handleRequest(request) {
+export function handleBookRequest(request) {
     syncLoggedInUser(); 
     const { method, endpoint, data } = request;
     let response = { status: 200 }; // 🔹 ברירת מחדל: OK
@@ -79,33 +78,6 @@ export function handleRequest(request) {
                     response = { data: searchBooks(searchQuery), status: 200 };
                 }
             }
-            break;
-
-        case "/users":
-            if (method === "GET") {
-                response = { data: fetchUsers(), status: 200 };
-            } else if (method === "POST") {
-                const userResponse = registerUser(data.username, data.password);
-                response = userResponse.error ? { error: userResponse.error, status: 409 } : { data: userResponse, status: 201 };
-            }
-            break;
-
-        case "/users/login":
-            if (method === "POST") {
-                response = loginUser(data.username, data.password);
-                if (response.error) {
-                    response = { error: response.error, status: 401 };
-                } else {
-                    setLoggedInUser(data.username);
-                    currentLoggedInUser = response;
-                    response = { data: response, status: 200 };
-                }
-            }
-            break;
-
-        case "/users/session":
-            const user = getLoggedInUser();
-            response = user ? { data: user, status: 200 } : { error: "No user session", status: 401 };
             break;
 
         default:

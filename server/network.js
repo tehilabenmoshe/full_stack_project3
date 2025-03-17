@@ -1,4 +1,5 @@
-import { handleRequest } from "./server.js";
+import { handleBookRequest } from "./bookServre.js";
+import {handleUserRequest} from "./userServer.js";
 
 class Network {
     constructor(lossProbability = 0.0, minDelay = 1000, maxDelay = 3000) {
@@ -34,10 +35,21 @@ class Network {
         console.log(`⏳ Simulating network delay of ${Math.round(delay)}ms`);
 
         setTimeout(() => {
-            const response = handleRequest(request);
+            let response;
+        
+            // ✅ שליחה לשרת הנכון בהתאם לנתיב
+            if (request.endpoint.startsWith("/users")) {
+                response = handleUserRequest(request); // שליחה לשרת המשתמשים
+            } else if (request.endpoint.startsWith("/books")) {
+                response = handleBookRequest(request); // שליחה לשרת הספרים
+            } else {
+                response = { error: "Unknown service" };
+            }
+        
             console.log(`✅ Response received from ${request.endpoint}`, response);
             callback(response);
         }, delay);
+        
     }
 }
 
